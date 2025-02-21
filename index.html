@@ -78,6 +78,15 @@
     </div>
 
     <script>
+        function getMinutesSince2000(date) {
+            const referenceDate = new Date("2000-01-01T00:00:00Z");
+            return Math.floor((date - referenceDate) / (1000 * 60));
+        }
+        
+        const today = new Date();
+        const todayMinutes = getMinutesSince2000(today);
+        document.getElementById('dateFilter').value = today.toISOString().split('T')[0];
+        
         const search = instantsearch({
             indexName: 'Aujourduy',
             searchClient: algoliasearch('Y4MR1NZHUG', 'e2c5211b0c5fd5bd468831b566fe0711')
@@ -85,7 +94,8 @@
 
         search.addWidgets([
             instantsearch.widgets.configure({
-                hitsPerPage: 1000
+                hitsPerPage: 1000,
+                filters: `DateTimeMinutes >= ${todayMinutes}`
             }),
             instantsearch.widgets.searchBox({
                 container: '#searchbox',

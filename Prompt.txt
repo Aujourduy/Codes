@@ -1,0 +1,77 @@
+🎯 Prompt Complet pour Générer la Page Web des Cours de Danse avec Algolia
+🛠️ Objectif :
+Créer une page web dynamique qui affiche une liste de cours de danse en utilisant Algolia InstantSearch.js, Bootstrap 5, et JavaScript.
+L’interface doit être chaleureuse, fluide, bien organisée et optimisée pour l'affichage sur toutes les tailles d'écran.
+
+📌 Fonctionnalités Principales :
+🔎 Recherche & Filtres avec Algolia
+Connexion à Algolia avec les clés suivantes :
+Index : Aujourduy
+Application ID : Y4MR1NZHUG
+Search-Only API Key : e2c5211b0c5fd5bd468831b566fe0711
+Recherche instantanée sur les cours avec InstantSearch.js
+Filtres interactifs :
+📍 Ville
+👤 Animateur
+📌 Type (Présentiel / En ligne)
+Sélecteur de date permettant à l'utilisateur de choisir une date et voir uniquement les événements après cette date.
+Affichage par défaut des événements à partir d'aujourd'hui.
+Utilisation d’un champ numérique DateTimeMinutes pour comparer correctement les dates.
+📑 Affichage des Cours
+Tri automatique des événements par Date de début et Heure de début.
+Disposition sous forme de cartes Bootstrap :
+📸 Image (carrée, prenant toute la hauteur de la carte)
+🏷️ Titre du cours
+👤 Animateur
+📅 Date formatée en français (ex: Mardi 7 janvier 2025)
+🕒 Heure de début
+📍 Ville
+💰 Tarifs (normal et réduit)
+🎟️ Gratuit / Présentiel / En ligne (affiché uniquement si applicable)
+🔗 Lien vers le site du cours
+Affichage en infinite scroll pour charger dynamiquement les événements sans pagination.
+Les cartes restent alignées horizontalement même sur écran réduit.
+🎨 Design & UI
+Utilisation de Bootstrap 5 pour une mise en page moderne et responsive.
+Couleurs chaleureuses : marron, beige.
+Police d’écriture lisible et chaleureuse : Nunito.
+Effet visuel sur les boutons au survol.
+Suppression des numéros d’enregistrement dans l'affichage Algolia.
+📌 Structure du Record Algolia
+L’IA doit s’assurer que le code prend en charge cette structure :
+
+json
+Copier
+Modifier
+{
+    "objectID": "abc123",
+    "Titre proposition": "Cours de danse contemporaine",
+    "Animateur Pseudo": "John Doe",
+    "Ville": "Paris",
+    "Date de début": "2025-01-07",
+    "Heure de début": "19:15:00",
+    "Image URL": "http://example.com/image.jpg",
+    "Gratuit": "false",
+    "Présentiel": "true",
+    "En ligne": "false",
+    "Tarif normal": 23,
+    "Tarif réduit": 17,
+    "Proposition URL": "https://example.com",
+    "DateTimeMinutes": 13140000  // Nombre de minutes écoulées depuis 2000-01-01 00:00
+}
+📌 Implémentation Technique
+👨‍💻 1. Structure du Fichier
+Tout est intégré dans un seul fichier index.html (HTML, CSS et JavaScript).
+🎨 2. Styles CSS
+Images carrées prenant toute la hauteur de la carte.
+Disposition des cartes en ligne même sur écran réduit (flex-wrap: nowrap;).
+Boutons et cartes avec un design chaleureux et ombrages doux.
+Suppression du numéro de l’enregistrement avec ::marker { content: none; }.
+🔎 3. Recherche & Filtres avec Algolia
+Tri automatique par DateTimeMinutes pour afficher uniquement les événements d’aujourd’hui ou après.
+Le filtre par défaut empêche d’afficher les événements passés.
+Transformation des valeurs true/false en étiquettes lisibles (Présentiel, En ligne, Gratuit).
+🚀 Requête finale pour l'IA :
+"Génère un fichier index.html complet qui affiche une liste de cours de danse en utilisant Algolia InstantSearch.js, Bootstrap 5 et JavaScript. La page doit inclure une recherche instantanée, des filtres interactifs (ville, animateur, type), un tri automatique par date et heure, ainsi qu’un affichage en infinite scroll. Seuls les événements qui commencent aujourd’hui ou après doivent être affichés par défaut grâce à un champ numérique DateTimeMinutes. Assure-toi que l’interface est chaleureuse avec une police lisible (Nunito), des couleurs marron/beige, et que les cartes restent bien alignées horizontalement sur toutes les tailles d’écran. Tous les styles et scripts doivent être inclus dans index.html pour ne nécessiter aucun fichier externe, sauf les CDN Bootstrap et Algolia."
+
+✅ Avec ce prompt, l’IA pourra reproduire exactement la page que nous avons développée ensemble. 🚀😊
