@@ -18,6 +18,24 @@
         .container {
             max-width: 900px;
             margin: auto;
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .row.mb-4 {
+            margin-bottom: 5px;
+        }
+
+        #searchbox {
+            position: sticky;
+            top: 0;
+            background: #f5e6d3;
+            z-index: 1000;
+            padding: 10px 0;
         }
 
         .card {
@@ -28,12 +46,17 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            min-height: 2.5cm; /* Assurer une hauteur minimale de 2.5 cm */
+            min-height: 3cm;
         }
 
         .card:hover {
             transform: scale(1.03);
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease-in-out;
         }
 
         .card img {
@@ -44,7 +67,7 @@
 
         .col-auto {
             height: 100%;
-            min-height: 2.5cm;
+            min-height: 3cm;
         }
 
         ::marker {
@@ -147,7 +170,7 @@
                             <div class="card mb-3" style="height: 150px; display: flex; flex-wrap: nowrap; align-items: stretch; min-width: 300px;" onclick="window.location.href='${hit['Proposition URL']}'">
                                 <div class="row g-0 flex-nowrap" style="height: 100%; width: 100%;">
                                     <div class="col-auto" style="height: 100%; width: 150px;">
-                                        <img src="${hit['Image URL']}" class="img-fluid rounded-start" alt="${hit['Titre proposition']}" style="height: 100%; object-fit: cover;">
+                                        <img src="${hit['Image URL']}" class="img-fluid rounded-start" alt="${hit['Titre proposition']}" loading="lazy">
                                     </div>
                                     <div class="col d-flex align-items-center">
                                         <div class="card-body" style="padding: 5px; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
