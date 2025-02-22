@@ -27,16 +27,29 @@
             margin-bottom: 10px;
         }
 
-        .row.mb-4 {
-            margin-bottom: 5px;
+        #searchbox {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
         }
 
-        #searchbox {
-            position: sticky;
-            top: 0;
-            background: #f5e6d3;
-            z-index: 1000;
-            padding: 10px 0;
+        .ais-SearchBox-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        .ais-SearchBox-form::after,
+        .ais-SearchBox-reset,
+        .ais-SearchBox-submit {
+            display: none !important;
         }
 
         .card {
@@ -153,6 +166,7 @@
                 filters: `DateTimeMinutes >= ${todayMinutes}`
             }),
             instantsearch.widgets.searchBox({
+                
                 container: '#searchbox',
                 placeholder: 'Rechercher un cours...'
             }),
