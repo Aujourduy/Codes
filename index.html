@@ -113,17 +113,17 @@
     @media (max-width: 576px) {
       .card {
         height: auto !important;
-        min-height: 15vh;
+        min-height: 15vh !important;  /* Forcer l'application de la hauteur minimale */
       }
       .col-auto {
-        width: 25%;
-        aspect-ratio: 1/1;
-        min-height: unset;
+        width: 25% !important;
+        aspect-ratio: 1/1 !important;
+        min-height: unset !important;
       }
     }
     /* ********** Personnalisation des informations de la vignette **********
        Définies séparément pour être modifiées individuellement.
-       Chaque classe est initialisée en normal (non gras, non italique) avec une taille de 1.0rem.
+       Chaque classe est initialisée en normal avec une taille de 1.0rem.
     ********** */
     .info-date {
       padding: 0;            /* ********** Modifier ici ********** */
@@ -136,7 +136,7 @@
       padding: 0;            /* ********** Modifier ici ********** */
       margin: 0;             /* ********** Modifier ici ********** */
       font-size: 1.0rem;      /* ********** Modifier ici ********** */
-      font-weight: bold;    /* ********** Modifier ici ********** */
+      font-weight: normal;    /* ********** Modifier ici ********** */
       font-style: normal;     /* ********** Modifier ici ********** */
     }
     .info-details {
@@ -157,7 +157,7 @@
 </head>
 <body>
   <div class="container mt-4">
-    <h1 class="text-center">Liste des Cours de Danse v=18 </h1>
+    <h1 class="text-center">Liste des Cours de Danse v=19 </h1>
     <div id="searchbox" class="mb-3"></div>
     <div id="hits" class="mt-3"></div>
   </div>
