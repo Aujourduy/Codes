@@ -1,19 +1,20 @@
-const CACHE_NAME = "cours-danse-cache-v3";
+const CACHE_NAME = "cours-danse-cache-v4";
 const urlsToCache = [
-    "/index.html?v=3",
-    "/styles.css?v=3",
-    "/script.js?v=3",
-    "/appli_icon.png?v=3"
+    self.origin + "/index.html",
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css",
+    "https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap",
+    "https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch.umd.min.js",
+    "https://cdn.jsdelivr.net/npm/instantsearch.js@4"
 ];
 
 self.addEventListener("install", event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            console.log("Cache mis à jour");
+            console.log("Mise en cache des fichiers essentiels...");
             return cache.addAll(urlsToCache);
-        })
+        }).catch(err => console.error("Erreur lors de la mise en cache :", err))
     );
-    self.skipWaiting(); // Force l'activation immédiate
+    self.skipWaiting(); // Activation immédiate du Service Worker
 });
 
 self.addEventListener("activate", event => {
@@ -27,14 +28,20 @@ self.addEventListener("activate", event => {
                     }
                 })
             );
-        }).then(() => self.clients.claim()) // Met à jour tous les clients immédiatement
+        }).then(() => self.clients.claim()) // Met à jour les clients immédiatement
     );
 });
 
 self.addEventListener("fetch", event => {
+    if (event.request.url.includes("algolia")) {
+        console.log("Ignoré Algolia en mode hors-ligne");
+        return;
+    }
     event.respondWith(
-        fetch(event.request).catch(() => {
-            return caches.match(event.request);
+        caches.match(event.request).then(response => {
+            return response || fetch(event.request);
+        }).catch(() => {
+            console.error("Échec de récupération :", event.request.url);
         })
     );
 });
