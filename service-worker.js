@@ -1,10 +1,9 @@
-const CACHE_NAME = "cours-danse-cache-v2";
+const CACHE_NAME = "cours-danse-cache-v3";
 const urlsToCache = [
-    "/index.html",
-    "/styles.css",
-    "/script.js",
-    "/icon-192.png",
-    "/icon-512.png"
+    "/index.html?v=3",
+    "/styles.css?v=3",
+    "/script.js?v=3",
+    "/appli_icon.png?v=3"
 ];
 
 self.addEventListener("install", event => {
