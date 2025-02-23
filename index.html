@@ -19,7 +19,6 @@
     .container {
       max-width: 900px;
       margin: auto;
-      /* Padding supprimé */
     }
     h1 {
       font-size: 1.5rem;
@@ -40,10 +39,13 @@
       max-width: 600px;
       margin: 20px auto;
     }
-    /* Forçage du padding (et margin) à 0 pour la liste d'Algolia */
     .ais-InfiniteHits-list {
       padding: 0 !important;
       margin: 0 !important;
+    }
+    /* Cacher le bouton "Show more results" */
+    .ais-InfiniteHits-loadMore {
+      display: none !important;
     }
     .ais-SearchBox-input {
       width: 100%;
@@ -74,19 +76,40 @@
       transform: scale(1.03);
       box-shadow: 0px 6px 10px rgba(0,0,0,0.15);
     }
-    /* Classe personnalisée pour la carte sans hauteur fixe */
     .card-custom {
-      min-width: 300px; /* ********** Modifier ici si nécessaire ********** */
+      min-width: 300px;
     }
-    .card img {
+    /* Répartition des colonnes dans la carte :
+       - Colonne image : 30%
+       - Colonne contenu : 70%
+    */
+    .card .col-auto {
+      width: 30% !important;
+      max-width: 30% !important;
+      flex: 0 0 30% !important;
+    }
+    .card .col {
+      width: 70% !important;
+      max-width: 70% !important;
+      flex: 0 0 70% !important;
+    }
+    /* Conteneur carré pour l'image */
+    .img-container {
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* Ratio 1:1 */
+    }
+    .img-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .col-auto {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Forçage du padding de la carte : 0 sur tous les côtés sauf à gauche (10px) */
+    .card-body {
+      padding: 0 0 0 10px;
     }
     .bottom-buttons {
       position: fixed;
@@ -117,43 +140,62 @@
     ::marker {
       content: none !important;
     }
-    /* Media query pour les écrans de smartphone */
     @media (max-width: 576px) {
       .card {
         height: auto !important;
-        min-height: 15vh !important;  /* Forcer l'application de la hauteur minimale */
+        min-height: 15vh !important;
       }
     }
-    /* Personnalisation des informations de la vignette */
-    .info-date,
-    .info-title,
-    .info-details,
-    .info-tarif {
-      padding: 0;
-      margin: 0;
-      font-size: 1.0rem;
-      font-weight: normal;
+    /* CLASSES POUR LA 1ère LIGNE */
+    .weekday-info {
+      font-size: 1rem;      /* Taille initiale */
+      font-weight: 400;     /* Poids normal */
+      font-style: normal;   /* Style normal */
+      margin-right: 0.11rem;
+    }
+    .date-info {
+      font-size: 1rem;
+      font-weight: 400;
       font-style: normal;
+      margin-right: 0.11rem;
     }
-    /* Répartition des colonnes dans la carte :
-       - Colonne image : 25%
-       - Colonne contenu : 75%
-    */
-    .card .col-auto {
-      width: 25% !important;
-      max-width: 25% !important;
-      flex: 0 0 25% !important;
+    .time-info {
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: normal;
+      margin-left: 0.11rem;
     }
-    .card .col {
-      width: 75% !important;
-      max-width: 75% !important;
-      flex: 0 0 75% !important;
+    /* CLASSES POUR LA 4ème LIGNE */
+    .ville-info {
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: italic;
+      margin-right: 0.11rem;
+    }
+    .tarif-info {
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: normal;
+      margin-left: 0.11rem;
+    }
+    /* Autres classes d'information */
+    .animateur-info {
+      font-size: 1rem;
+      font-weight: 700; /* En gras */
+      font-style: normal;
+      margin: 0.11rem 0;
+    }
+    .titre-info {
+      font-size: 1rem;
+      font-weight: 400;
+      font-style: normal;
+      margin: 0.11rem 0;
     }
   </style>
 </head>
 <body>
   <div class="container mt-4">
-    <h1 class="text-center">Liste des Cours de Danse v=24 </h1>
+    <h1 class="text-center">Liste des Cours de Danse v=34 </h1>
     <div id="searchbox" class="mb-3"></div>
     <div id="hits" class="mt-3"></div>
   </div>
@@ -199,14 +241,50 @@
               <div class="card mb-3 card-custom" onclick="window.location.href='${hit['Proposition URL']}'">
                 <div class="row g-0 flex-nowrap" style="height: 100%; width: 100%;">
                   <div class="col-auto">
-                    <img src="${hit['Image URL']}" class="img-fluid rounded-start" alt="${hit['Titre proposition']}">
+                    <div class="img-container">
+                      <img src="${hit['Image URL']}" class="img-fluid rounded-start" alt="${hit['Titre proposition']}">
+                    </div>
                   </div>
                   <div class="col d-flex align-items-center">
                     <div class="card-body">
-                      <div class="info-date">📅 ${new Date(hit['Date de début']).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                      <div class="info-title">${hit['Titre proposition']}</div>
-                      <div class="info-details">👤 ${hit['Animateur Pseudo']} | 🕒 ${hit['Heure de début']} | 📍 ${hit.Ville}</div>
-                      <div class="info-tarif">💰 ${hit['Tarif normal']}€ (${hit['Tarif réduit']}€ réduit)</div>
+                      <!-- Première ligne décomposée en 3 classes -->
+                      <div>
+                        <span class="weekday-info">
+                          ${(() => {
+                            const date = new Date(hit['Date de début']);
+                            const weekday = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+                            const formattedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+                            return formattedWeekday;
+                          })()}
+                        </span>
+                        <span class="date-info">
+                          ${(() => {
+                            const date = new Date(hit['Date de début']);
+                            const day = ("0" + date.getDate()).slice(-2);
+                            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                            const year = date.getFullYear().toString().slice(-2);
+                            return `${day}/${month}/${year}`;
+                          })()}
+                        </span>
+                        <span class="time-info">
+                          ${hit['Heure de début'].slice(0,5)}
+                        </span>
+                      </div>
+                      <div class="animateur-info">
+                        ${hit['Animateur Pseudo']}
+                      </div>
+                      <div class="titre-info">
+                        ${hit['Titre proposition']}
+                      </div>
+                      <!-- Quatrième ligne décomposée en 2 classes -->
+                      <div>
+                        <span class="ville-info">
+                          ${hit.Ville}
+                        </span>
+                        <span class="tarif-info">
+                          --- ${hit['Tarif normal']}€${(hit['Tarif réduit'] && hit['Tarif réduit'] != 0) ? ' / ' + hit['Tarif réduit'] + '€' : ''}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
