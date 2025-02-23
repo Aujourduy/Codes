@@ -19,7 +19,7 @@
     .container {
       max-width: 900px;
       margin: auto;
-      padding: 10px;
+      /* Padding supprimé */
     }
     h1 {
       font-size: 1.5rem;
@@ -34,6 +34,16 @@
       border-radius: 10px;
       box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
       padding: 10px;
+    }
+    /* Pour que les vignettes aient la même largeur que la barre de recherche */
+    #hits {
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    /* Forçage du padding (et margin) à 0 pour la liste d'Algolia */
+    .ais-InfiniteHits-list {
+      padding: 0 !important;
+      margin: 0 !important;
     }
     .ais-SearchBox-input {
       width: 100%;
@@ -58,6 +68,7 @@
       min-height: 3cm;
       display: flex;
       flex-direction: row;
+      width: 100%;
     }
     .card:hover {
       transform: scale(1.03);
@@ -73,9 +84,6 @@
       object-fit: cover;
     }
     .col-auto {
-      width: 150px;
-      height: 100%;
-      min-height: 3cm;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -115,49 +123,37 @@
         height: auto !important;
         min-height: 15vh !important;  /* Forcer l'application de la hauteur minimale */
       }
-      .col-auto {
-        width: 25% !important;
-        aspect-ratio: 1/1 !important;
-        min-height: unset !important;
-      }
     }
-    /* ********** Personnalisation des informations de la vignette **********
-       Définies séparément pour être modifiées individuellement.
-       Chaque classe est initialisée en normal avec une taille de 1.0rem.
-    ********** */
-    .info-date {
-      padding: 0;            /* ********** Modifier ici ********** */
-      margin: 0;             /* ********** Modifier ici ********** */
-      font-size: 1.0rem;      /* ********** Modifier ici ********** */
-      font-weight: normal;    /* ********** Modifier ici ********** */
-      font-style: normal;     /* ********** Modifier ici ********** */
-    }
-    .info-title {
-      padding: 0;            /* ********** Modifier ici ********** */
-      margin: 0;             /* ********** Modifier ici ********** */
-      font-size: 1.0rem;      /* ********** Modifier ici ********** */
-      font-weight: normal;    /* ********** Modifier ici ********** */
-      font-style: normal;     /* ********** Modifier ici ********** */
-    }
-    .info-details {
-      padding: 0;            /* ********** Modifier ici ********** */
-      margin: 0;             /* ********** Modifier ici ********** */
-      font-size: 1.0rem;      /* ********** Modifier ici ********** */
-      font-weight: normal;    /* ********** Modifier ici ********** */
-      font-style: normal;     /* ********** Modifier ici ********** */
-    }
+    /* Personnalisation des informations de la vignette */
+    .info-date,
+    .info-title,
+    .info-details,
     .info-tarif {
-      padding: 0;            /* ********** Modifier ici ********** */
-      margin: 0;             /* ********** Modifier ici ********** */
-      font-size: 1.0rem;      /* ********** Modifier ici ********** */
-      font-weight: normal;    /* ********** Modifier ici ********** */
-      font-style: normal;     /* ********** Modifier ici ********** */
+      padding: 0;
+      margin: 0;
+      font-size: 1.0rem;
+      font-weight: normal;
+      font-style: normal;
+    }
+    /* Répartition des colonnes dans la carte :
+       - Colonne image : 25%
+       - Colonne contenu : 75%
+    */
+    .card .col-auto {
+      width: 25% !important;
+      max-width: 25% !important;
+      flex: 0 0 25% !important;
+    }
+    .card .col {
+      width: 75% !important;
+      max-width: 75% !important;
+      flex: 0 0 75% !important;
     }
   </style>
 </head>
 <body>
   <div class="container mt-4">
-    <h1 class="text-center">Liste des Cours de Danse v=19 </h1>
+    <h1 class="text-center">Liste des Cours de Danse v=24 </h1>
     <div id="searchbox" class="mb-3"></div>
     <div id="hits" class="mt-3"></div>
   </div>
