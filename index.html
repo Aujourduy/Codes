@@ -233,23 +233,24 @@
       font-style: normal;
       margin: 0.11rem 0;
     }
-
-
+    /* Classe pour tronquer le texte (troncature avec "...") */
+    .truncated {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     /********** Modifie a partir d ici ******/
     .vignette-card {
-  padding-bottom: 0 !important;
-}
-
-.vignette-row {
-  height: auto !important;
-  min-height: 100% !important;
-}
-.vignette-img-container {
-  height: 100% !important;
-}
-
-
+      padding-bottom: 0 !important;
+    }
+    .vignette-row {
+      height: auto !important;
+      min-height: 100% !important;
+    }
+    .vignette-img-container {
+      height: 100% !important;
+    }
   </style>
 </head>
 <body>
@@ -351,7 +352,9 @@
                             return formattedWeekday;
                           })()}
                         </span>
-                        <span class="date-info">
+                        <span class="date-info truncated">
+                          <!-- pictogramme: date -->
+                          <img src="pictogramme_date.png" alt="Date Icon" class="pictogramme pictogramme-date" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
                             const date = new Date(hit['Date de début']);
                             const day = ("0" + date.getDate()).slice(-2);
@@ -360,23 +363,47 @@
                             return `${day}/${month}/${year}`;
                           })()}
                         </span>
-                        <span class="time-info">
+                        <span class="time-info truncated">
+                          <!-- pictogramme: heure -->
+                          <img src="pictogramme_heure.png" alt="Heure Icon" class="pictogramme pictogramme-heure" style="height: 1em; margin-right: 0.2em;">
                           ${hit['Heure de début'].slice(0,5)}
                         </span>
                       </div>
-                      <div class="vignette-animateur animateur-info">
+                      <div class="vignette-animateur animateur-info truncated">
+                        <!-- pictogramme: animateur -->
+                        <img src="pictogramme_animateur.png" alt="Animateur Icon" class="pictogramme pictogramme-animateur" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Animateur Pseudo']}
                       </div>
-                      <div class="vignette-titre titre-info">
+                      <div class="vignette-titre titre-info truncated">
+                        <!-- pictogramme: titre -->
+                        <img src="pictogramme_titre.png" alt="Titre Icon" class="pictogramme pictogramme-titre" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Titre proposition']}
                       </div>
                       <!-- Quatrième ligne décomposée en 2 classes -->
                       <div class="vignette-fourth-line">
-                        <span class="ville-info">
+                        <span class="ville-info truncated">
+                          <!-- pictogramme: ville -->
+                          <img src="pictogramme_ville.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
                           ${hit.Ville}
                         </span>
-                        <span class="tarif-info">
-                          --- ${hit['Tarif normal']}€${(hit['Tarif réduit'] && hit['Tarif réduit'] != 0) ? ' / ' + hit['Tarif réduit'] + '€' : ''}
+                        <span class="tarif-info truncated">
+                          <!-- pictogramme: tarif -->
+                          <img src="pictogramme_tarif.png" alt="Tarif Icon" class="pictogramme pictogramme-tarif" style="height: 1em; margin-right: 0.2em;">
+                          ${(() => {
+                            const tarifNormal = hit['Tarif normal'];
+                            const tarifReduit = hit['Tarif réduit'];
+                            let output = "";
+                            if (tarifNormal && tarifNormal != 0) {
+                              output += tarifNormal + '€';
+                            }
+                            if (tarifReduit && tarifReduit != 0) {
+                              if (output !== "") {
+                                output += ' / ';
+                              }
+                              output += tarifReduit + '€';
+                            }
+                            return output;
+                          })()}
                         </span>
                       </div>
                     </div>
