@@ -1,0 +1,175 @@
+{
+  "name": "PropositionsUpload",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "402b7c87-264f-45ca-9590-2246e89688b4",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        420,
+        0
+      ],
+      "id": "0510f8ff-e910-4ade-a575-d94bb6938431",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "returnAll": true,
+        "options": {
+          "fields": []
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        200,
+        0
+      ],
+      "id": "19b38aa1-eb59-4066-80b8-12a6d9b4aa2a",
+      "name": "PropositionsLister",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        20
+      ],
+      "id": "713c899c-5b96-499c-8c0e-d413450e05be",
+      "name": "Wait",
+      "webhookId": "1ab1d2e0-8239-4ab2-a9d7-d78584bfa27c"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "update",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "Id",
+              "fieldValue": "={{ $json.Id }}"
+            },
+            {
+              "fieldName": "Image URL",
+              "fieldValue": "={{ $json['Proposition Image'][0].signedUrl }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        860,
+        20
+      ],
+      "id": "49059148-9aa4-4779-888f-9306bdf7dc40",
+      "name": "PropositionUpdate",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "PropositionsLister",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PropositionsLister": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "PropositionUpdate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PropositionUpdate": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e0ac05c4-ba40-4554-8ca7-487509320696",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fed026248e568476fe229ff7637d149c91d62bc4a96e12e3517e469936bb4c6d"
+  },
+  "id": "pWIePSDWX0IaSUMi",
+  "tags": []
+}

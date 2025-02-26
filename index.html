@@ -377,14 +377,14 @@
                       <div class="vignette-titre titre-info truncated">
                         <!-- pictogramme: titre -->
                         <img src="pictogramme_titre.png" alt="Titre Icon" class="pictogramme pictogramme-titre" style="height: 1em; margin-right: 0.2em;">
-                        ${hit['Titre proposition']}
+                        ${hit['Titre proposition'].toLowerCase().charAt(0).toUpperCase()}${hit['Titre proposition'].slice(1).toLowerCase()}
                       </div>
                       <!-- Quatrième ligne décomposée en 2 classes -->
                       <div class="vignette-fourth-line">
                         <span class="ville-info truncated">
                           <!-- pictogramme: ville -->
                           <img src="pictogramme_ville.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
-                          ${hit.Ville}
+                          ${hit.Ville} (${hit['Pays Code']})
                         </span>
                         <span class="tarif-info truncated">
                           <!-- pictogramme: tarif -->

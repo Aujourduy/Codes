@@ -1,0 +1,100 @@
+{
+  "name": "Effacer toutes les propositions (effacer liens sur heroku DELETE FROM public.\"_nc_m2m_Propositions_Membres\"; )",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -120
+      ],
+      "id": "43f66bf0-3b2e-4172-acc8-49a496012aa2",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "delete",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "id": "={{ $json.Id }}"
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        120,
+        -120
+      ],
+      "id": "acc322e2-35a8-4d91-8627-67f7415c63b7",
+      "name": "NocoDB1",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        -180,
+        -120
+      ],
+      "id": "ff50aeb7-eaab-4f09-987f-f8ac73a783a2",
+      "name": "Lister les Propositions",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Lister les Propositions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lister les Propositions": {
+      "main": [
+        [
+          {
+            "node": "NocoDB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f544ebc9-df15-40fd-b623-2fbf050a4114",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fed026248e568476fe229ff7637d149c91d62bc4a96e12e3517e469936bb4c6d"
+  },
+  "id": "nR0QgDH5Bq8WcZsE",
+  "tags": []
+}

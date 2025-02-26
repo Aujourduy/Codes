@@ -1,0 +1,442 @@
+{
+  "name": "Googlesheet_to_NocoDB",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -40
+      ],
+      "id": "abffcc1c-fa90-4ae2-bf41-598d047aeb07",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1FaOfn-Dp24IKsWD7OzrRYuEAbLZZeGEqvaCHzynkh3Q",
+          "mode": "list",
+          "cachedResultName": "NocoDB Heroku",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FaOfn-Dp24IKsWD7OzrRYuEAbLZZeGEqvaCHzynkh3Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1251614790,
+          "mode": "list",
+          "cachedResultName": "Swell Dance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FaOfn-Dp24IKsWD7OzrRYuEAbLZZeGEqvaCHzynkh3Q/edit#gid=1251614790"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        200,
+        -40
+      ],
+      "id": "ebf7dfe4-893e-47a7-8e6a-5c157dbc15b1",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "U4Fi0APsfpPLO6Bx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1fb0c3b-5751-4fa0-9ed8-5255dd815f20",
+              "leftValue": "={{ $json['Id Animateur Sheet'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        -40
+      ],
+      "id": "ce42f031-c403-4adf-881d-f8e181ffb406",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://app.nocodb.com/api/v2/tables/m4v3p6j5sk0itoc/links/cg153mtyl38xiqf/records/ {{ $json.Id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "xc-token",
+              "value": "j8qKVVV-dFY0NJuHvhMxJ0gaF3iOc7yFRx9lJIOJ"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Id",
+              "value": "={{ $json['Id Animateur Sheet'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1380,
+        -40
+      ],
+      "id": "d224965e-3980-4788-86f6-d19d61e800df",
+      "name": "Lier Proposition Animateur"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1160,
+        -40
+      ],
+      "id": "582eada1-1379-47fe-895d-66682e93e470",
+      "name": "Wait",
+      "webhookId": "742f3cf0-a93f-490e-b5a5-0a4dc8b1a43e"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        900,
+        -60
+      ],
+      "id": "105d5fb2-9010-4964-8c3d-60a010352576",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "create",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "=Id Animateur Sheet",
+              "fieldValue": "={{ $json['Id Animateur Sheet'] }}"
+            },
+            {
+              "fieldName": "Titre proposition",
+              "fieldValue": "={{ $json['Titre de l\\'événement'] }}"
+            },
+            {
+              "fieldName": "Description",
+              "fieldValue": "={{ $json.Description }}"
+            },
+            {
+              "fieldName": "Présentiel",
+              "fieldValue": "={{ $json['Présentiel'] }}"
+            },
+            {
+              "fieldName": "En ligne",
+              "fieldValue": "={{ $json['En ligne'] }}"
+            },
+            {
+              "fieldName": "Adresse ligne 1",
+              "fieldValue": "={{ $json['Adresse ligne 1'] }}"
+            },
+            {
+              "fieldName": "Adresse ligne 2",
+              "fieldValue": "={{ $json['Adresse ligne 2'] }}"
+            },
+            {
+              "fieldName": "Ville",
+              "fieldValue": "={{ $json.Ville }}"
+            },
+            {
+              "fieldName": "Code postal",
+              "fieldValue": "={{ $json['Code postal'] }}"
+            },
+            {
+              "fieldName": "Région/Etat/Province",
+              "fieldValue": "={{ $json['Région'] }}"
+            },
+            {
+              "fieldName": "Pays",
+              "fieldValue": "={{ $json.Pays }}"
+            },
+            {
+              "fieldName": "Info d'accès",
+              "fieldValue": "={{ $json['Infos d\\'accès'] }}"
+            },
+            {
+              "fieldName": "Tarif normal",
+              "fieldValue": "={{ $json['Tarif normal'] ? parseFloat($json['Tarif normal']) : 0 }}"
+            },
+            {
+              "fieldName": "Tarif réduit",
+              "fieldValue": "={{ $json['Tarif réduit'] ? parseFloat($json['Tarif réduit']) : 0 }}"
+            },
+            {
+              "fieldName": "Proposition URL",
+              "fieldValue": "={{ $('Google Sheets').item.json['Proposition URL'] }}"
+            },
+            {
+              "fieldName": "Proposition Image",
+              "fieldValue": "={{ $('Google Sheets').item.json['Proposition Image'] }}"
+            },
+            {
+              "fieldName": "Proposition Image URL",
+              "fieldValue": "={{ $('Google Sheets').item.json['Proposition Image URL'] }}"
+            },
+            {
+              "fieldName": "GPS",
+              "fieldValue": "={{ $json.GPS }}"
+            },
+            {
+              "fieldName": "Gratuit",
+              "fieldValue": "={{ $json['Gratuit séance découverte'] }}"
+            },
+            {
+              "fieldName": "Danse libre",
+              "fieldValue": "={{ $('Google Sheets').item.json.Danse }}"
+            },
+            {
+              "fieldName": "Date de début",
+              "fieldValue": "={{ $json[\"Date début\"].split(\"/\")[1] + \"/\" + $json[\"Date début\"].split(\"/\")[0] + \"/\" + $json[\"Date début\"].split(\"/\")[2] }}\n"
+            },
+            {
+              "fieldName": "Date de fin",
+              "fieldValue": "={{ $json[\"Date fin\"].split(\"/\")[1] + \"/\" + $json[\"Date fin\"].split(\"/\")[0] + \"/\" + $json[\"Date fin\"].split(\"/\")[2] }}"
+            },
+            {
+              "fieldName": "Heure de début",
+              "fieldValue": "={{ $json[\"Heure début\"] != \"\" ? $json[\"Heure début\"] : \"00:00\" }}"
+            },
+            {
+              "fieldName": "Heure de fin",
+              "fieldValue": "={{ $json[\"Heure fin\"] != \"\" ? $json[\"Heure fin\"] : \"00:00\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        660,
+        -60
+      ],
+      "id": "5b237626-75c0-4a32-9a73-fd4ae7ea89fd",
+      "name": "Créer des Propositions",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mmjx4uynj1nofyy",
+        "id": "={{ $('Loop Over Items').item.json['Id Animateur Sheet'] }}"
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        1600,
+        -40
+      ],
+      "id": "355f8bb2-d337-404b-9727-205594c7ef7f",
+      "name": "Photo Animateur",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "update",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "Proposition Image",
+              "fieldValue": "={{ $json.Photo }}"
+            },
+            {
+              "fieldName": "Id",
+              "fieldValue": "={{ $('Wait').item.json.Id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        1820,
+        -40
+      ],
+      "id": "32749d6b-4742-4533-a15a-d22d1fd449e0",
+      "name": "MAJ Image Proposition",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "EoIUJqNCKhzLaVvR",
+          "name": "NocoDB Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Créer des Propositions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lier Proposition Animateur": {
+      "main": [
+        [
+          {
+            "node": "Photo Animateur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Lier Proposition Animateur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Créer des Propositions": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Animateur": {
+      "main": [
+        [
+          {
+            "node": "MAJ Image Proposition",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MAJ Image Proposition": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d0caf049-f2c4-49e0-be10-ba9ddc578462",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fed026248e568476fe229ff7637d149c91d62bc4a96e12e3517e469936bb4c6d"
+  },
+  "id": "cTwrYrttJbFqkkNE",
+  "tags": []
+}

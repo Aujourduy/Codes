@@ -1,0 +1,195 @@
+{
+  "name": "Upload",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0c70d627-b691-4c17-a91f-7d1a35c0587c",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "id": "={{ $json.Id }}"
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        920,
+        0
+      ],
+      "id": "497886d5-9edd-4cb0-ab86-ce02de42824f",
+      "name": "NocoDB",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "HY4xuOeBfJFQsoNz",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\"Id\":  3977},{ \"Id\": 3978},{ \"Id\": 3979},{ \"Id\": 3980},{ \"Id\": 3981},{ \"Id\": 3982},{ \"Id\": 3983},{ \"Id\": 3984},{ \"Id\": 3985},{ \"Id\": 3986},{ \"Id\": 3987},{ \"Id\": 3988},{ \"Id\": 3989},{ \"Id\": 3990},{ \"Id\": 3991},{ \"Id\": 3992},{ \"Id\": 3993},{ \"Id\": 3994},{ \"Id\": 3995},{ \"Id\": 3996},{ \"Id\": 3997},{ \"Id\": 3998},{ \"Id\": 3999},{ \"Id\": 4000},{ \"Id\": 4001},{ \"Id\": 4002},{ \"Id\": 4003},{ \"Id\": 4004},{ \"Id\": 4005},{ \"Id\": 4006},{ \"Id\": 4007},{ \"Id\": 4008},{ \"Id\": 4009},{ \"Id\": 4010},{ \"Id\": 4011},{ \"Id\": 4012},{ \"Id\": 4013},{ \"Id\": 4014},{ \"Id\": 4015},{ \"Id\": 4016},{ \"Id\": 4017},{ \"Id\": 4018},{ \"Id\": 4019},{ \"Id\": 4020},{ \"Id\": 4021},{ \"Id\": 4022},{ \"Id\": 4023},{ \"Id\": 4024},{ \"Id\": 4025},{ \"Id\": 4026},{ \"Id\": 4027},{ \"Id\": 4028},{ \"Id\": 4029},{ \"Id\": 4030},{ \"Id\": 4031},{ \"Id\": 4032},{ \"Id\": 4033},{ \"Id\": 4034},{ \"Id\": 4035},{ \"Id\": 4036},{ \"Id\": 4037},{ \"Id\": 4038},{ \"Id\": 4039},{ \"Id\": 4040},{ \"Id\": 4041},{ \"Id\": 4042},{ \"Id\": 4043},{ \"Id\": 4044},{ \"Id\": 4045},{ \"Id\": 4046},{ \"Id\": 4047},{ \"Id\": 4048},{ \"Id\": 4049},{ \"Id\": 4050},{ \"Id\": 4051},{ \"Id\": 4052},{ \"Id\": 4053},{ \"Id\": 4054},{ \"Id\": 4055},{ \"Id\": 4056},{ \"Id\": 4057},{ \"Id\": 4058},{ \"Id\": 4059},{ \"Id\": 4060},{ \"Id\": 4061},{ \"Id\": 4062},{ \"Id\": 4063},{ \"Id\": 4064},{ \"Id\": 4065},{ \"Id\": 4066},{ \"Id\": 4067},{ \"Id\": 4068},{ \"Id\": 4069},{ \"Id\": 4070},{ \"Id\": 4071},{ \"Id\": 4072},{ \"Id\": 4073},{ \"Id\": 4074},{ \"Id\": 4075},{ \"Id\": 4076},{ \"Id\": 4127},{ \"Id\": 4128},{ \"Id\": 4129},{ \"Id\": 4130},{ \"Id\": 4131},{ \"Id\": 4132},{ \"Id\": 4133},{ \"Id\": 4134},{ \"Id\": 4135},{ \"Id\": 4136},{ \"Id\": 4137},{ \"Id\": 4138},{ \"Id\": 4139},{ \"Id\": 4140},{ \"Id\": 4141},{ \"Id\": 4142},{ \"Id\": 4077},{ \"Id\": 4078},{ \"Id\": 4079},{ \"Id\": 4080},{ \"Id\": 4081},{ \"Id\": 4082},{ \"Id\": 4083},{ \"Id\": 4084},{ \"Id\": 4085},{ \"Id\": 4086},{ \"Id\": 4087},{ \"Id\": 4088},{ \"Id\": 4089},{ \"Id\": 4090},{ \"Id\": 4091},{ \"Id\": 4092},{ \"Id\": 4093},{ \"Id\": 4094},{ \"Id\": 4095},{ \"Id\": 4096},{ \"Id\": 4097},{ \"Id\": 4098},{ \"Id\": 4099},{ \"Id\": 4100},{ \"Id\": 4101},{ \"Id\": 4102},{ \"Id\": 4103},{ \"Id\": 4104},{ \"Id\": 4105},{ \"Id\": 4106},{ \"Id\": 4107},{ \"Id\": 4108},{ \"Id\": 4109},{ \"Id\": 4110},{ \"Id\": 4111},{ \"Id\": 4112},{ \"Id\": 4113},{ \"Id\": 4114},{ \"Id\": 4115},{ \"Id\": 4116},{ \"Id\": 4117},{ \"Id\": 4118},{ \"Id\": 4119},{ \"Id\": 4120},{ \"Id\": 4121},{ \"Id\": 4122},{ \"Id\": 4123},{ \"Id\": 4124},{ \"Id\": 4125},{ \"Id\": 4126}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ],
+      "id": "9acf291c-2b00-40d0-ac93-2f64571c8d72",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "update",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "=Id",
+              "fieldValue": "={{ $json.Id }}"
+            },
+            {
+              "fieldName": "=Image URL",
+              "fieldValue": "={{ $json['Proposition Image'][0].thumbnails.card_cover.signedUrl }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "0a4dff36-9e47-4c63-a0c7-7a369c6b266f",
+      "name": "NocoDB3",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "HY4xuOeBfJFQsoNz",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ],
+      "id": "1ff1fc82-33df-4f14-80bb-0117bba7bfca",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "78618372-fc81-4d41-9c56-55ec383ec9ca",
+      "name": "Wait",
+      "webhookId": "341e6596-929c-4ff5-9377-6b0b0c455021"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NocoDB": {
+      "main": [
+        [
+          {
+            "node": "NocoDB3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NocoDB3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "NocoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fab9dd64-92f0-4dc3-83b5-f35510f1308a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b6ca025f2a03a8c8c108b600b7fd5dadbb42ac9f9a03b112411407609011c128"
+  },
+  "id": "rL79Oa4TvqGtGh4H",
+  "tags": []
+}
