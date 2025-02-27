@@ -2,41 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <!-- Configuration du viewport pour forcer le zoom à 1 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Liste des Cours de Danse v=42</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="/appli_icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
   <style>
-    /* Style général */
     body {
       font-family: 'Nunito', sans-serif;
       background-color: #f5e6d3;
       color: #5c4033;
       padding-bottom: 80px;
     }
-    /* Div générale qui enveloppe tout le contenu */
     .general-container {
       margin: auto;
-      /* Par défaut (desktop ou autres) */
       width: 60%;
     }
-    /* Sur tablette/téléphone en mode portrait : 90% de largeur */
     @media (max-width: 1024px) and (orientation: portrait) {
       .general-container {
         width: 90%;
       }
     }
-    /* Sur tablette/téléphone en mode paysage : 70% de largeur */
     @media (max-width: 1024px) and (orientation: landscape) {
       .general-container {
         width: 70%;
       }
     }
-    /* Header avec logo et slogan */
     .page-header {
       text-align: center;
       margin-bottom: 20px;
@@ -50,14 +44,11 @@
     .page-header .slogan {
       font-size: 1.2rem;
       font-weight: 400;
-      font-style: normal;
     }
-    /* Ligne de titre à conserver */
     h1.text-center {
       font-size: 1.5rem;
       margin-bottom: 10px;
     }
-    /* Section pour afficher les dimensions et infos d'écran */
     #screen-dimensions,
     #screen-info {
       text-align: center;
@@ -74,7 +65,6 @@
       box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
       padding: 10px;
     }
-    /* Pour que les vignettes aient la même largeur que la barre de recherche */
     #hits {
       max-width: 600px;
       margin: 20px auto;
@@ -83,7 +73,6 @@
       padding: 0 !important;
       margin: 0 !important;
     }
-    /* Cacher le bouton "Show more results" */
     .ais-InfiniteHits-loadMore {
       display: none !important;
     }
@@ -119,10 +108,6 @@
     .card-custom {
       min-width: 300px;
     }
-    /* Répartition des colonnes dans la carte :
-       - Colonne image : 30%
-       - Colonne contenu : 70%
-    */
     .card .col-auto {
       width: 30% !important;
       max-width: 30% !important;
@@ -134,11 +119,10 @@
       max-width: 70% !important;
       flex: 0 0 70% !important;
     }
-    /* Conteneur carré pour l'image */
     .img-container {
       position: relative;
       width: 100%;
-      padding-top: 100%; /* Ratio 1:1 */
+      padding-top: 100%;
     }
     .img-container img {
       position: absolute;
@@ -148,11 +132,9 @@
       height: 100%;
       object-fit: cover;
     }
-    /* Padding de la carte : 0 sur tous les côtés sauf à gauche (10px) */
     .card-body {
       padding: 0 0 0 10px;
     }
-    /* Boutons fixes avec amélioration GPU */
     .bottom-buttons {
       position: fixed !important;
       bottom: 10px !important;
@@ -189,26 +171,21 @@
         min-height: 15vh !important;
       }
     }
-    /* CLASSES POUR LA 1ÈRE LIGNE de la vignette */
     .weekday-info {
       font-size: 1rem;
       font-weight: 400;
-      font-style: normal;
       margin-right: 0.11rem;
     }
     .date-info {
       font-size: 1rem;
       font-weight: 400;
-      font-style: normal;
       margin-right: 0.11rem;
     }
     .time-info {
       font-size: 1rem;
       font-weight: 400;
-      font-style: normal;
       margin-left: 0.11rem;
     }
-    /* CLASSES POUR LA 4ÈME LIGNE de la vignette */
     .ville-info {
       font-size: 1rem;
       font-weight: 400;
@@ -218,30 +195,23 @@
     .tarif-info {
       font-size: 1rem;
       font-weight: 400;
-      font-style: normal;
       margin-left: 0.11rem;
     }
-    /* Autres classes d'information de la vignette */
     .animateur-info {
       font-size: 1rem;
       font-weight: 700;
-      font-style: normal;
       margin: 0.11rem 0;
     }
     .titre-info {
       font-size: 1rem;
       font-weight: 400;
-      font-style: normal;
       margin: 0.11rem 0;
     }
-    /* Classe pour tronquer le texte (troncature avec "...") */
     .truncated {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
-    /********** Modifie a partir d ici ******/
     .vignette-card {
       padding-bottom: 0 !important;
     }
@@ -258,27 +228,20 @@
   <div id="general-container" class="general-container">
     <header id="page-header" class="page-header">
       <div class="row">
-        <div class="col-2">
-        </div>
+        <div class="col-2"></div>
         <div class="col-1">
           <img id="logo" src="./appli_icon.png" alt="Logo" class="logo">
         </div>
         <div class="col-7">
           <div id="slogan" class="slogan"><h1>Des danses libres </br> pour libérer sa vérité</h1></div>
         </div>
-        <div class="col-2">
-        </div>
+        <div class="col-2"></div>
       </div>
     </header>
-
-
-    <!-- Ligne de titre à conserver ************* -->
     <h5 id="title-line1" class="text-center">Site proposé par Duy</h5>
     <h6 id="title-line" class="text-center">Version : 43</h6>
-    <!-- Infos sur l'écran -->
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
-    <!-- Zone de recherche et résultats -->
     <div id="searchbox" class="mb-3"></div>
     <div id="hits" class="mt-3"></div>
   </div>
@@ -287,8 +250,8 @@
     <button onclick="openFilters()">Filtres</button>
     <button onclick="scrollToTop()">⬆</button>
   </div>
+  <button id="installButton" style="display: none;">Installer l'application</button>
   <script>
-    // Fonction de mise à jour des dimensions et infos d'écran
     function updateScreenInfo() {
       const dims = "Largeur: " + window.innerWidth + "px, Hauteur: " + window.innerHeight + "px";
       let type = "";
@@ -300,13 +263,9 @@
         type = "desktop";
       }
       const orientation = window.innerWidth > window.innerHeight ? "paysage" : "portrait";
-      
-      // Info sur l'écran à afficher ou pas
-      // document.getElementById('screen-dimensions').innerHTML = dims;
-      // document.getElementById('screen-info').innerHTML = "Type: " + type + ", Orientation: " + orientation;
+      document.getElementById('screen-dimensions').innerHTML = dims;
+      document.getElementById('screen-info').innerHTML = "Type: " + type + ", Orientation: " + orientation;
     }
-    
-    // Mise à jour lors du chargement et du redimensionnement
     window.addEventListener("load", function(){
       document.documentElement.style.zoom = "1";
       updateScreenInfo();
@@ -314,7 +273,6 @@
     window.addEventListener("resize", function(){
       updateScreenInfo();
     });
-    
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -357,7 +315,6 @@
                   </div>
                   <div class="col d-flex align-items-center vignette-content-col">
                     <div class="card-body vignette-body">
-                      <!-- Première ligne décomposée en 3 classes -->
                       <div class="vignette-first-line">
                         <span class="weekday-info">
                           ${(() => {
@@ -368,7 +325,6 @@
                           })()}
                         </span>
                         <span class="date-info truncated">
-                          <!-- pictogramme: date -->
                           <img src="pictogramme_date.png" alt="Date Icon" class="pictogramme pictogramme-date" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
                             const date = new Date(hit['Date de début']);
@@ -379,30 +335,24 @@
                           })()}
                         </span>
                         <span class="time-info truncated">
-                          <!-- pictogramme: heure -->
                           <img src="pictogramme_heure.png" alt="Heure Icon" class="pictogramme pictogramme-heure" style="height: 1em; margin-right: 0.2em;">
                           ${hit['Heure de début'].slice(0,5)}
                         </span>
                       </div>
                       <div class="vignette-animateur animateur-info truncated">
-                        <!-- pictogramme: animateur -->
                         <img src="pictogramme_animateur.png" alt="Animateur Icon" class="pictogramme pictogramme-animateur" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Animateur Pseudo']}
                       </div>
                       <div class="vignette-titre titre-info truncated">
-                        <!-- pictogramme: titre -->
                         <img src="pictogramme_titre.png" alt="Titre Icon" class="pictogramme pictogramme-titre" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Titre proposition'].toLowerCase().charAt(0).toUpperCase()}${hit['Titre proposition'].slice(1).toLowerCase()}
                       </div>
-                      <!-- Quatrième ligne décomposée en 2 classes -->
                       <div class="vignette-fourth-line">
                         <span class="ville-info truncated">
-                          <!-- pictogramme: ville -->
                           <img src="pictogramme_ville.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
                           ${hit.Ville} (${hit['Pays Code']})
                         </span>
                         <span class="tarif-info truncated">
-                          <!-- pictogramme: tarif -->
                           <img src="pictogramme_tarif.png" alt="Tarif Icon" class="pictogramme pictogramme-tarif" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
                             const tarifNormal = hit['Tarif normal'];
@@ -437,6 +387,25 @@
         .then(reg => console.log("Service Worker enregistré :", reg))
         .catch(err => console.log("Erreur d'enregistrement du Service Worker :", err));
     }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installButton').style.display = 'block';
+    });
+
+    document.getElementById('installButton').addEventListener('click', (e) => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('L\'utilisateur a accepté l\'installation');
+        } else {
+          console.log('L\'utilisateur a refusé l\'installation');
+        }
+        deferredPrompt = null;
+      });
+    });
   </script>
 </body>
 </html>
