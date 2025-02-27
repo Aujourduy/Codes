@@ -239,18 +239,18 @@
       </div>
     </header>
     <h5 id="title-line1" class="text-center">Site proposé par Duy</h5>
-    <h6 id="title-line" class="text-center">Version : 43</h6>
+    <h6 id="title-line" class="text-center">Version : 44</h6>
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
     <div id="searchbox" class="mb-3"></div>
     <div id="hits" class="mt-3"></div>
   </div>
   <div id="bottom-buttons" class="bottom-buttons">
-    <button onclick="openMenu()">Menu</button>
-    <button onclick="openFilters()">Filtres</button>
-    <button onclick="scrollToTop()">⬆</button>
+      <button onclick="openMenu()">Menu</button>
+      <button onclick="openFilters()">Filtres</button>
+      <button onclick="scrollToTop()">⬆</button>
+      <button id="installButton" style="display: none;">Installer</button>   
   </div>
-  <button id="installButton" style="display: none;">Installer l'application</button>
   <script>
     function updateScreenInfo() {
       const dims = "Largeur: " + window.innerWidth + "px, Hauteur: " + window.innerHeight + "px";
