@@ -1,6 +1,6 @@
 {
-    "name": "Agenda des ateliers de danse libre",
-    "short_name": "Les Danses Libres",
+    "name": "Aujourduy",
+    "short_name": "Aujourduy",
     "description": "Une application pour découvrir les ateliers de danse libre disponibles.",
     "start_url": "/index.html",
     "display": "standalone",
@@ -8,7 +8,7 @@
     "theme_color": "#5c4033",
     "icons": [
         {
-            "src": "/appli_icon.png",
+            "src": "/logo192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
