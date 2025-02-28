@@ -1,4 +1,4 @@
-const CACHE_NAME = "cours-danse-cache-v48"; // Version mise à jour ********
+const CACHE_NAME = "cours-danse-cache-v49"; // Version mise à jour ********
 const urlsToCache = [
     self.location.origin + "/index.html",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css",
