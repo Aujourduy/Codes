@@ -97,7 +97,8 @@
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-      min-height: 2cm;
+      / * min-height: 1.5cm; */
+      height: auto;
       display: flex;
       flex-direction: row;
       width: 100%;
@@ -169,7 +170,7 @@
     @media (max-width: 576px) {
       .card {
         height: auto !important;
-        min-height: 15vh !important;
+        min-height: 5vh !important;
       }
     }
     .weekday-info {
@@ -238,7 +239,7 @@
       </div>
     </header>
     <h5 id="title-line1" class="text-center">Site proposé par Duy</h5>
-    <h6 id="title-line" class="text-center">Version : v47</h6>
+    <h6 id="title-line" class="text-center">Version : v48</h6>
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
     <div id="searchbox" class="mb-3"></div>
