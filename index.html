@@ -34,21 +34,31 @@
       }
     }
     .page-header {
+      display: flex; /* Active Flexbox */
+      align-items: center; /* Centre verticalement les éléments */
+      gap: 10px; /* Espace entre l'image et le slogan (optionnel) */
       text-align: center;
       margin-bottom: 20px;
       margin-top: 30px;
       max-width: 600px;
+      margin: 0 auto; /* Centre le bloc horizontalement */
+    
 
     }
     .page-header .logo {
-      width: 15vw !important;
+      width: 15vw;
+      max-width: 70px;
       height: auto;
     }
 
     .page-header .slogan {
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       font-weight: bold;
-      padding-left: 20px;
+      padding-left: 0px;
+      text-align: left; /* Alignement du texte à gauche */
+      display: flex;
+      justify-content: center;
+      padding: auto;
     }
     h1.text-center {
       font-size: 1.5rem;
@@ -233,16 +243,10 @@
 <body>
   <div id="general-container" class="general-container">
     <header id="page-header" class="page-header">
-      <div class="row">
-        <div class="col-1">
           <img id="logo" src="./Logo192.png" alt="Logo" class="logo">
-        </div>
-        <div class="col-11">
-          <div id="slogan" class="slogan"> Des belles danses vivantes </br> pour libérer notre vérité </div>
-        </div>
-      </div>
+          <div id="slogan" class="slogan"> <h1>Site proposé par Duy</h1> </div>
     </header>
-    <h5 id="title-line1" class="text-center">Site proposé par Duy</h5>
+    <h5 id="title-line1" class="text-center">Inventaire de belles danses vivantes </br> pour libérer notre vérité </h5>
     <h6 id="title-line" class="text-center">Version beta : v53</h6>
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
@@ -304,7 +308,7 @@
       }),
       instantsearch.widgets.searchBox({
         container: '#searchbox',
-        placeholder: 'Rechercher un cours : Ville, Cours, Animateur, ...'
+        placeholder: 'Rechercher: Ville, Prof...'
       }),
       instantsearch.widgets.infiniteHits({
         container: '#hits',
