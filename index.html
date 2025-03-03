@@ -12,6 +12,16 @@
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
   <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@google-cloud/analytics-data@2.1.0/dist/analytics-data.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MQM26E6VBJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MQM26E6VBJ');
+  </script>
+  <script src="https://apis.google.com/js/api.js"></script>
+
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -245,7 +255,7 @@
       </div>
     </header>
     <h5 id="title-line1" class="text-center">Inventaire de belles danses vivantes <br> pour libérer notre vérité</h5>
-    <h6 id="title-line" class="text-center">Version beta : v58</h6>
+    <h6 id="title-line" class="text-center">Version beta : v60</h6> <!-- ************* -->
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
     <div id="searchbox" class="mb-3"></div>
@@ -424,99 +434,67 @@
 
 <!-- ********************Google Analytics DEBUT ******************************************* -->
 
+  <h1>Google Analytics 4 Dashboard</h1>
+  <div id="analytics-data">
+    <h2>Visiteurs uniques : <span id="unique-visitors-count">Chargement...</span></h2>
+    <h2>Nombre total de visites : <span id="total-visits-count">Chargement...</span></h2>
+  </div>
 
+  <script>
+    const API_KEY = 'AIzaSyBqBYc325AtSc_B_9WwhGb4bbpEVsPksCY'; // Clé API
+    const PROPERTY_ID = '480260426'; // ID de propriété Google Analytics 4
 
+    // Charger la bibliothèque Google API Client
+    function loadGoogleAnalyticsApi() {
+      gapi.load('client', async () => {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: ['https://analyticsdata.googleapis.com/$discovery/rest?version=v1'],
+        });
 
-
-
-<!-- Charger la bibliothèque gapi -->
-<script src="https://apis.google.com/js/api.js"></script>
-
-<script>
-  const API_KEY = 'AIzaSyBqBYc325AtSc_B_9WwhGb4bbpEVsPksCY'; // Insérez votre clé API ici
-  const PROPERTY_ID = 'G-MQM26E6VBJ'; // Utilisez votre identifiant de propriété pour GA4 (ID de mesure)
-
-  async function loadAnalytics() {
-    try {
-      // Vérifier que gapi est chargé
-      if (!window.gapi) {
-        throw new Error('gapi n\'est pas chargé.');
-      }
-
-      // Étape 1 : Charger le module 'client' de gapi
-      await new Promise((resolve, reject) => {
-        gapi.load('client', resolve); // Le callback resolve est appelé quand gapi est chargé
+        fetchAnalyticsData();
       });
-
-      console.log('gapi.client chargé avec succès.');
-
-      // Étape 2 : Initialiser gapi.client avec la clé API
-      await gapi.client.init({
-        apiKey: API_KEY,
-      });
-
-      console.log('gapi.client initialisé avec succès.');
-
-      // Étape 3 : Charger explicitement l'API Google Analytics Data
-      await gapi.client.load('https://analyticsdata.googleapis.com/$discovery/rest?version=v1');
-
-      console.log('API Google Analytics Data chargée avec succès.');
-
-      // Afficher la structure complète de l'API dans la console
-      console.log('gapi.client.analyticsdata:', gapi.client.analyticsdata);
-
-      // Vérifier que l'API Google Analytics Data est correctement chargée
-      if (!gapi.client.analyticsdata ) {
-        throw new Error('L\'API Google Analytics Data n\'est pas initialisée correctement 1.');
-      }
-
-
-      // Vérifier que l'API Google Analytics Data est correctement chargée
-      if (!gapi.client.analyticsdata.properties) {
-        throw new Error('L\'API Google Analytics Data n\'est pas initialisée correctement.2');
-      }
-
-
-      // Vérifier que l'API Google Analytics Data est correctement chargée
-      if (!gapi.client.analyticsdata.properties.runReport) {
-        throw new Error('L\'API Google Analytics Data n\'est pas initialisée correctement.3 ');
-      }
-
-      // Étape 4 : Utiliser l'API Google Analytics Data
-      const response = await gapi.client.analyticsdata.properties.runReport({
-        property: `properties/${PROPERTY_ID}`,
-        requestBody: {
-          dimensions: [{ name: 'date' }],
-          metrics: [
-            { name: 'activeUsers' },
-            { name: 'screenPageViews' },
-          ],
-          dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-        },
-      });
-
-      // Étape 5 : Traiter les résultats
-      const rows = response.result.rows;
-      if (rows && rows.length > 0) {
-        const users = rows[0].metricValues[0].value;
-        const pageviews = rows[0].metricValues[1].value;
-        document.getElementById('analytics-visits').innerText =
-          `Visiteurs actifs : ${users} | Pages vues : ${pageviews}`;
-      } else {
-        document.getElementById('analytics-visits').innerText =
-          'Aucune donnée disponible pour les 30 derniers jours.';
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des statistiques Google Analytics:', error);
-      document.getElementById('analytics-visits').innerText =
-        `Erreur : ${error.message || 'Veuillez vérifier la console pour plus de détails.'}`;
     }
-  }
 
-  // Appeler la fonction pour charger les statistiques Google Analytics
-  loadAnalytics();
-</script>
+    // Fonction pour récupérer les données Google Analytics
+    async function fetchAnalyticsData() {
+      try {
+        const response = await gapi.client.analyticsdata.properties.runReport({
+          property: `properties/${PROPERTY_ID}`,
+          requestBody: {
+            dateRanges: [
+              {
+                startDate: '30daysAgo', // Les 30 derniers jours
+                endDate: 'today',
+              },
+            ],
+            metrics: [
+              { name: 'activeUsers' }, // Visiteurs uniques
+              { name: 'sessions' }, // Nombre de visites
+            ],
+          },
+        });
 
+        const result = response.result;
+
+        // Récupération des métriques
+        const rows = result.rows;
+        const uniqueVisitors = rows[0].metricValues[0].value; // Visiteurs uniques
+        const totalSessions = rows[0].metricValues[1].value; // Nombre total de visites
+
+        // Affiche les résultats
+        document.getElementById('unique-visitors-count').textContent = uniqueVisitors;
+        document.getElementById('total-visits-count').textContent = totalSessions;
+
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données Analytics', error);
+        document.getElementById('analytics-data').innerHTML = '<p>Erreur de chargement des données...</p>';
+      }
+    }
+
+    // Charger la bibliothèque et les données lorsque le document est prêt
+    loadGoogleAnalyticsApi();
+  </script>
 
 <!-- ********************Google Analytics FIN ******************************************* -->
 
