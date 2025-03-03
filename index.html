@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -426,6 +428,57 @@
 
     gtag('config', 'G-PM13MJE6ZW');
   </script>
+
+  <div id="analytics-visits">Chargement des statistiques...</div>
+
+  <script async src="https://apis.google.com/js/api.js"></script>
+  <script>
+    // Remplacez par votre clé API Google ici
+    const API_KEY = 'AIzaSyBqBYc325AtSc_B_9WwhGb4bbpEVsPksCY'; // Insérez votre clé API ici
+    const PROPERTY_ID = 'G-PM13MJE6ZW'; // Utilisez votre identifiant de propriété pour GA4 (ID de mesure)
+
+    async function loadAnalytics() {
+      gapi.load('client', async () => {
+        try {
+          // Initialisation de l'API Google avec la clé API
+          await gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: ['https://analyticsdata.googleapis.com/$discovery/rest?version=v1'], // API pour GA4
+          });
+
+          // Requête pour obtenir des statistiques basées sur le Reporting API (GA4)
+          const response = await gapi.client.analyticsdata.properties.runReport({
+            property: `properties/${PROPERTY_ID}`, // Format pour GA4
+            requestBody: {
+              dimensions: [{ name: 'date' }], // Exemple : ajouter une dimension "date"
+              metrics: [
+                { name: 'activeUsers' }, // Utilisateurs actifs (GA4)
+                { name: 'screenPageViews' }, // Vues d'écran/pages (GA4)
+              ],
+              dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }], // Dernières 7 jours
+            },
+          });
+
+          // Extraction des données des statistiques
+          const rows = response.result.rows;
+          const users = rows[0].metricValues[0].value; // Metrique pour visiteurs actifs
+          const pageviews = rows[0].metricValues[1].value; // Metrique pour pages vues
+
+          // Affichage des statistiques dans la div avec l'id "analytics-visits"
+          document.getElementById('analytics-visits').innerText =
+            `Visiteurs actifs : ${users} | Pages vues : ${pageviews}`;
+        } catch (error) {
+          console.error('Erreur lors de la récupération des statistiques Google Analytics:', error);
+          document.getElementById('analytics-visits').innerText =
+            'Impossible de charger les statistiques.';
+        }
+      });
+    }
+
+    // Charger les données Google Analytics après le chargement de l'API Google
+    loadAnalytics();
+  </script>
+
 
   <!-- Cloudflare Web Analytics -->
    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "edd5eaf9ed6440e1a319b4aa93c5522e"}'>
