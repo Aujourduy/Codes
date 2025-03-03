@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
-  <title>Liste des Cours de Danse v=42</title>
+  <title>Liste des Cours de Danse</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="/appli_icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -37,9 +37,11 @@
       text-align: center;
       margin-bottom: 20px;
       margin-top: 30px;
+      max-width: 600px;
+
     }
     .page-header .logo {
-      width: 15vw;
+      width: 15vw !important;
       height: auto;
     }
 
@@ -233,7 +235,7 @@
     <header id="page-header" class="page-header">
       <div class="row">
         <div class="col-1">
-          <img id="logo" src="./appli_icon.png" alt="Logo" class="logo">
+          <img id="logo" src="./Logo192.png" alt="Logo" class="logo">
         </div>
         <div class="col-11">
           <div id="slogan" class="slogan"> Des belles danses vivantes </br> pour libérer notre vérité </div>
@@ -241,7 +243,7 @@
       </div>
     </header>
     <h5 id="title-line1" class="text-center">Site proposé par Duy</h5>
-    <h6 id="title-line" class="text-center">Version beta : v52</h6>
+    <h6 id="title-line" class="text-center">Version beta : v53</h6>
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
     <div id="searchbox" class="mb-3"></div>
@@ -302,7 +304,7 @@
       }),
       instantsearch.widgets.searchBox({
         container: '#searchbox',
-        placeholder: 'Rechercher un cours...'
+        placeholder: 'Rechercher un cours : Ville, Cours, Animateur, ...'
       }),
       instantsearch.widgets.infiniteHits({
         container: '#hits',
@@ -426,6 +428,10 @@
    </script>
   <!-- End Cloudflare Web Analytics -->
 
+  <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6a369a4b9e7e4281816c4883a3373bf8"}'>
+    </script>
+  <!-- End Cloudflare Web Analytics -->
 
 </body>
 </html>
