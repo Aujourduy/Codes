@@ -2,7 +2,7 @@
     "name": "Aujourduy",
     "short_name": "Aujourduy",
     "description": "Une application pour découvrir les ateliers de danse libre disponibles.",
-    "start_url": "/index.html",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#f5e6d3",
     "theme_color": "#5c4033",
