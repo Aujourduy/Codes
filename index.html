@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <title>Liste des ateliers de danse libre</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="/appli_icon.png" type="image/png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Inclusion de PapaParse pour le CSV -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@google-cloud/analytics-data@2.1.0/dist/analytics-data.min.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MQM26E6VBJ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-MQM26E6VBJ');
-  </script>
-  <script src="https://apis.google.com/js/api.js"></script>
+
 
   <style>
     body {
@@ -29,54 +27,62 @@
       color: #5c4033;
       padding-bottom: 80px;
     }
+
     .general-container {
       margin: auto;
       width: 60%;
     }
+
     @media (max-width: 1024px) and (orientation: portrait) {
       .general-container {
         width: 90%;
       }
     }
+
     @media (max-width: 1024px) and (orientation: landscape) {
       .general-container {
         width: 70%;
       }
     }
+
     .page-header {
-      display: flex; /* Active Flexbox */
-      align-items: center; /* Centre verticalement les éléments */
-      gap: 10px; /* Espace entre l'image et le slogan (optionnel) */
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-align: center;
       margin-bottom: 20px;
       margin-top: 30px;
       max-width: 600px;
-      margin: 0 auto; /* Centre le bloc horizontalement */
+      margin: 0 auto;
     }
+
     .page-header .logo {
       width: 15vw;
       max-width: 70px;
       height: auto;
     }
+
     .page-header .slogan {
       font-size: 1.1rem;
       font-weight: bold;
       padding-left: 0px;
-      text-align: left; /* Alignement du texte à gauche */
+      text-align: left;
       display: flex;
       justify-content: center;
-      padding: auto;
     }
+
     h1.text-center {
       font-size: 1.5rem;
       margin-bottom: 10px;
     }
+
     #screen-dimensions,
     #screen-info {
       text-align: center;
       font-size: 1rem;
       margin-bottom: 5px;
     }
+
     #searchbox {
       display: flex;
       justify-content: center;
@@ -84,20 +90,24 @@
       max-width: 600px;
       background: #fff;
       border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       padding: 10px;
     }
+
     #hits {
       max-width: 600px;
       margin: 20px auto;
     }
+
     .ais-InfiniteHits-list {
       padding: 0 !important;
       margin: 0 !important;
     }
+
     .ais-InfiniteHits-loadMore {
       display: none !important;
     }
+
     .ais-SearchBox-input {
       width: 100%;
       border: none;
@@ -105,15 +115,17 @@
       font-size: 1rem;
       background: transparent;
     }
+
     .ais-SearchBox-form::after,
     .ais-SearchBox-reset,
     .ais-SearchBox-submit {
       display: none !important;
     }
+
     .card {
       border: none;
       background-color: #fff;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
@@ -123,29 +135,35 @@
       flex-direction: row;
       width: 100%;
     }
+
     .card:hover {
       transform: scale(1.03);
-      box-shadow: 0px 6px 10px rgba(0,0,0,0.15);
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
     }
+
     .card-custom {
       min-width: 300px;
     }
+
     .card .col-auto {
       width: 25% !important;
       max-width: 25% !important;
       min-width: 25% !important;
       flex: 0 0 25% !important;
     }
+
     .card .col {
       width: 70% !important;
       max-width: 70% !important;
       flex: 0 0 70% !important;
     }
+
     .img-container {
       position: relative;
       width: 100%;
       padding-top: 100%;
     }
+
     .img-container img {
       position: absolute;
       top: 0;
@@ -154,9 +172,11 @@
       height: 100%;
       object-fit: cover;
     }
+
     .card-body {
       padding: 0 0 0 10px;
     }
+
     .bottom-buttons {
       position: fixed !important;
       bottom: 10px !important;
@@ -164,13 +184,14 @@
       transform: translateX(-50%) translateZ(0) !important;
       z-index: 9999 !important;
       will-change: transform;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255, 255, 255, 0.8);
       padding: 10px;
       border-radius: 15px;
       display: flex;
       gap: 15px;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
+
     .bottom-buttons button {
       background: transparent;
       color: #5c4033;
@@ -180,72 +201,68 @@
       cursor: pointer;
       font-size: 1rem;
     }
+
     .bottom-buttons button:hover {
       background: #5c4033;
       color: white;
     }
+
     ::marker {
       content: none !important;
     }
+
     @media (max-width: 576px) {
       .card {
         height: auto !important;
         min-height: 5vh !important;
       }
     }
-    .weekday-info {
-      font-size: 1rem;
-      font-weight: 400;
-      margin-right: 0.11rem;
-    }
-    .date-info {
-      font-size: 1rem;
-      font-weight: 400;
-      margin-right: 0.11rem;
-    }
-    .time-info {
-      font-size: 1rem;
-      font-weight: 400;
-      margin-left: 0.11rem;
-    }
-    .ville-info {
-      font-size: 1rem;
-      font-weight: 400;
-      font-style: italic;
-      margin-right: 0.11rem;
-    }
-    .tarif-info {
-      font-size: 1rem;
-      font-weight: 400;
-      margin-left: 0.11rem;
-    }
-    .animateur-info {
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0.11rem 0;
-    }
+
+    .weekday-info,
+    .date-info,
+    .time-info,
+    .ville-info,
+    .tarif-info,
+    .animateur-info,
     .titre-info {
       font-size: 1rem;
       font-weight: 400;
-      margin: 0.11rem 0;
+      margin: 0.11rem;
     }
+
     .truncated {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     .vignette-card {
       padding-bottom: 0 !important;
     }
+
     .vignette-row {
       height: auto !important;
       min-height: 100% !important;
     }
+
     .vignette-img-container {
       height: 100% !important;
     }
+
+    /* Style pour la section Citation du jour */
+    #citation-container {
+      max-width: 600px;
+      margin: 0px auto;
+      background: #fff;
+      padding: 5px 10px 5px 10px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      color: #d86441;
+    }
   </style>
 </head>
+
 <body>
   <div id="general-container" class="general-container">
     <header id="page-header" class="page-header">
@@ -254,8 +271,18 @@
         <h1>Site proposé par Duy</h1>
       </div>
     </header>
+
+
+
     <h5 id="title-line1" class="text-center">Inventaire de belles danses vivantes <br> pour libérer notre vérité</h5>
-    <h6 id="title-line" class="text-center">Version beta : v62</h6> <!-- ************* -->
+    <h6 id="title-line" class="text-center">Version beta : v63</h6>
+
+    <!-- Section Citation du jour -->
+    <div id="citation-container">
+      <p>Chargement de la citation du jour...</p>
+    </div>
+
+
     <div id="screen-dimensions"></div>
     <div id="screen-info"></div>
     <div id="searchbox" class="mb-3"></div>
@@ -266,41 +293,62 @@
     <button onclick="scrollToTop()">⬆</button>
     <button id="installButton" style="display: none;">Installer</button>
   </div>
+
+  <!-- Script pour la citation du jour encapsulé pour éviter les conflits -->
   <script>
-    function updateScreenInfo() {
-      const dims = "Largeur: " + window.innerWidth + "px, Hauteur: " + window.innerHeight + "px";
-      let type = "";
-      if (window.innerWidth < 768) {
-        type = "smartphone";
-      } else if (window.innerWidth < 1024) {
-        type = "tablette";
-      } else {
-        type = "desktop";
+    (function () {
+      // Fonction de formatage de la date au format "dd/mm/yyyy"
+      function formatDate(date) {
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0');
+        let yyyy = date.getFullYear();
+        return dd + '/' + mm + '/' + yyyy;
       }
-      const orientation = window.innerWidth > window.innerHeight ? "paysage" : "portrait";
-    }
-    window.addEventListener("load", function(){
-      document.documentElement.style.zoom = "1";
-      updateScreenInfo();
-    });
-    window.addEventListener("resize", function(){
-      updateScreenInfo();
-    });
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    function openMenu() {
-      alert('Menu ouvert (à implémenter)');
-    }
-    function openFilters() {
-      alert('Filtres ouverts (à implémenter)');
-    }
+      const today = new Date();
+      const todayFormatted = formatDate(today);
+      console.log("Date du jour:", todayFormatted);
+
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhtFtY-ganfj5GaPuYSY4U9gruyeNfiN--K4pBmEXFaxKZZHEAeLu46TSgMFvQiaGRQ9rWaTsiUTP/pub?output=csv';
+
+      Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        complete: function (results) {
+          console.log("Données chargées", results.data);
+          let citationFound = false;
+          results.data.forEach(function (row) {
+            console.log("Date lue :", row.Date);
+            if (row.Date && row.Date.trim() === todayFormatted) {
+              const citationHTML = `
+                <strong>Perspective d'aujourduy (${row.Date.trim()}) :</strong>
+                <blockquote>"${row.Perspective}"</blockquote>
+                <em>- ${row.Auteur}</em>
+              `;
+              document.getElementById('citation-container').innerHTML = citationHTML;
+              citationFound = true;
+            }
+          });
+          if (!citationFound) {
+            document.getElementById('citation-container').innerHTML = "<p>Aucune citation n'est prévue pour aujourd'hui.</p>";
+          }
+        },
+        error: function (err) {
+          console.error('Erreur lors du chargement du CSV :', err);
+          document.getElementById('citation-container').innerHTML = "<p>Erreur de chargement de la citation.</p>";
+        }
+      });
+    })();
+  </script>
+
+  <!-- Script pour Instagram InstantSearch (Algolia) -->
+  <script>
+    // Ici, on peut utiliser une autre variable ou simplement utiliser "todayAlgolia" si nécessaire
     function getMinutesSince2000(date) {
       const referenceDate = new Date("2000-01-01T00:00:00Z");
       return Math.floor((date - referenceDate) / (1000 * 60));
     }
-    const today = new Date();
-    const todayMinutes = getMinutesSince2000(today);
+    const todayAlgolia = new Date();
+    const todayMinutes = getMinutesSince2000(todayAlgolia);
     const search = instantsearch({
       indexName: 'Aujourduy',
       searchClient: algoliasearch('Y4MR1NZHUG', 'e2c5211b0c5fd5bd468831b566fe0711')
@@ -331,25 +379,25 @@
                       <div class="vignette-first-line">
                         <span class="weekday-info">
                           ${(() => {
-                            const date = new Date(hit['Date de début']);
-                            const weekday = date.toLocaleDateString('fr-FR', { weekday: 'short' });
-                            const formattedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
-                            return formattedWeekday;
-                          })()}
+                const date = new Date(hit['Date de début']);
+                const weekday = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+                const formattedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+                return formattedWeekday;
+              })()}
                         </span>
                         <span class="date-info truncated">
                           <img src="pictogramme_date.png" alt="Date Icon" class="pictogramme pictogramme-date" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
-                            const date = new Date(hit['Date de début']);
-                            const day = ("0" + date.getDate()).slice(-2);
-                            const month = ("0" + (date.getMonth() + 1)).slice(-2);
-                            const year = date.getFullYear().toString().slice(-2);
-                            return `${day}/${month}/${year}`;
-                          })()}
+                const date = new Date(hit['Date de début']);
+                const day = ("0" + date.getDate()).slice(-2);
+                const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                const year = date.getFullYear().toString().slice(-2);
+                return `${day}/${month}/${year}`;
+              })()}
                         </span>
                         <span class="time-info truncated">
                           <img src="pictogramme_heure.png" alt="Heure Icon" class="pictogramme pictogramme-heure" style="height: 1em; margin-right: 0.2em;">
-                          ${hit['Heure de début'].slice(0,5)}
+                          ${hit['Heure de début'].slice(0, 5)}
                         </span>
                       </div>
                       <div class="vignette-animateur animateur-info truncated">
@@ -368,20 +416,18 @@
                         <span class="tarif-info truncated">
                           <img src="pictogramme_tarif.png" alt="Tarif Icon" class="pictogramme pictogramme-tarif" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
-                            const tarifNormal = hit['Tarif normal'];
-                            const tarifReduit = hit['Tarif réduit'];
-                            let output = "";
-                            if (tarifNormal && tarifNormal != 0) {
-                              output += tarifNormal + '€';
-                            }
-                            if (tarifReduit && tarifReduit != 0) {
-                              if (output !== "") {
-                                output += ' / ';
-                              }
-                              output += tarifReduit + '€';
-                            }
-                            return output;
-                          })()}
+                const tarifNormal = hit['Tarif normal'];
+                const tarifReduit = hit['Tarif réduit'];
+                let output = "";
+                if (tarifNormal && tarifNormal != 0) {
+                  output += tarifNormal + '€';
+                }
+                if (tarifReduit && tarifReduit != 0) {
+                  if (output !== "") { output += ' / '; }
+                  output += tarifReduit + '€';
+                }
+                return output;
+              })()}
                         </span>
                       </div>
                     </div>
@@ -394,20 +440,20 @@
     ]);
     search.start();
   </script>
+
   <script>
+    // Code relatif au service worker et à l'installation PWA.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log("Service Worker enregistré :", reg))
         .catch(err => console.log("Erreur d'enregistrement du Service Worker :", err));
     }
-
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       document.getElementById('installButton').style.display = 'block';
     });
-
     document.getElementById('installButton').addEventListener('click', (e) => {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
@@ -421,91 +467,18 @@
     });
   </script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MQM26E6VBJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MQM26E6VBJ');
-</script>
-
-
-<!-- ********************Google Analytics DEBUT ******************************************* -->
-<!--
-  <h1>Google Analytics 4 Dashboard</h1>
-  <div id="analytics-data">
-    <h2>Visiteurs uniques : <span id="unique-visitors-count">Chargement...</span></h2>
-    <h2>Nombre total de visites : <span id="total-visits-count">Chargement...</span></h2>
-  </div>
-
+  <!-- Google Tag Manager & Cloudflare Web Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MQM26E6VBJ"></script>
   <script>
-    const API_KEY = 'AIzaSyBqBYc325AtSc_B_9WwhGb4bbpEVsPksCY'; // Clé API
-    const PROPERTY_ID = '480260426'; // ID de propriété Google Analytics 4
-
-    // Charger la bibliothèque Google API Client
-    function loadGoogleAnalyticsApi() {
-      gapi.load('client', async () => {
-        await gapi.client.init({
-          apiKey: API_KEY,
-          discoveryDocs: ['https://analyticsdata.googleapis.com/$discovery/rest?version=v1'],
-        });
-
-        fetchAnalyticsData();
-      });
-    }
-
-    // Fonction pour récupérer les données Google Analytics
-    async function fetchAnalyticsData() {
-      try {
-        const response = await gapi.client.analyticsdata.properties.runReport({
-          property: `properties/${PROPERTY_ID}`,
-          requestBody: {
-            dateRanges: [
-              {
-                startDate: '30daysAgo', // Les 30 derniers jours
-                endDate: 'today',
-              },
-            ],
-            metrics: [
-              { name: 'activeUsers' }, // Visiteurs uniques
-              { name: 'sessions' }, // Nombre de visites
-            ],
-          },
-        });
-
-        const result = response.result;
-
-        // Récupération des métriques
-        const rows = result.rows;
-        const uniqueVisitors = rows[0].metricValues[0].value; // Visiteurs uniques
-        const totalSessions = rows[0].metricValues[1].value; // Nombre total de visites
-
-        // Affiche les résultats
-        document.getElementById('unique-visitors-count').textContent = uniqueVisitors;
-        document.getElementById('total-visits-count').textContent = totalSessions;
-
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données Analytics', error);
-        document.getElementById('analytics-data').innerHTML = '<p>Erreur de chargement des données...</p>';
-      }
-    }
-
-    // Charger la bibliothèque et les données lorsque le document est prêt
-    loadGoogleAnalyticsApi();
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-MQM26E6VBJ');
   </script>
--->
-<!-- ********************Google Analytics FIN ******************************************* -->
-
-
-  <!-- Cloudflare Web Analytics -->
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "edd5eaf9ed6440e1a319b4aa93c5522e"}'></script>
-  <!-- End Cloudflare Web Analytics -->
-
-  <!-- Cloudflare Web Analytics -->
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6a369a4b9e7e4281816c4883a3373bf8"}'></script>
-  <!-- End Cloudflare Web Analytics -->
-
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "edd5eaf9ed6440e1a319b4aa93c5522e"}'></script>
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "6a369a4b9e7e4281816c4883a3373bf8"}'></script>
 </body>
+
 </html>
