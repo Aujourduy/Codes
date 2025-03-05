@@ -260,7 +260,16 @@
       text-align: center;
       color: #d86441;
     }
+
+    .ligne {
+      width: 20vw;
+      border: none;
+      border-top: 2px solid #000; /* ou une autre couleur/épaisseur */
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
+  
 </head>
 
 <body>
@@ -275,12 +284,14 @@
 
 
     <h5 id="title-line1" class="text-center">Inventaire de belles danses vivantes <br> pour libérer notre vérité</h5>
-    <h6 id="title-line" class="text-center">Version beta : v63</h6>
+    <h6 id="title-line" class="text-center">Version beta : v64</h6>
 
     <!-- Section Citation du jour -->
     <div id="citation-container">
       <p>Chargement de la citation du jour...</p>
     </div>
+
+    <hr class="ligne">
 
 
     <div id="screen-dimensions"></div>
@@ -320,8 +331,10 @@
             console.log("Date lue :", row.Date);
             if (row.Date && row.Date.trim() === todayFormatted) {
               const citationHTML = `
-                <strong>Perspective d'aujourduy (${row.Date.trim()}) :</strong>
-                <blockquote>"${row.Perspective}"</blockquote>
+                <span style="font-size: 0.9rem;">
+                  Perspective d'aujourduy (${row.Date.trim()}) : <br>
+                </span>
+                <q><strong>${row.Perspective}</strong></q>
                 <em>- ${row.Auteur}</em>
               `;
               document.getElementById('citation-container').innerHTML = citationHTML;
@@ -340,7 +353,8 @@
     })();
   </script>
 
-  <!-- Script pour Instagram InstantSearch (Algolia) -->
+
+  <!-- Script pour InstantSearch (Algolia) -->
   <script>
     // Ici, on peut utiliser une autre variable ou simplement utiliser "todayAlgolia" si nécessaire
     function getMinutesSince2000(date) {
