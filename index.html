@@ -238,6 +238,7 @@
 
     .vignette-card {
       padding-bottom: 0 !important;
+      background-color: rgba(255, 255, 255, 0.5)!important;
     }
 
     .vignette-row {
@@ -284,7 +285,7 @@
 
 
     <h5 id="title-line1" class="text-center">Site proposé par Duy Dang </h5>
-    <h6 id="title-line" class="text-center">Version beta : v68</h6>
+    <h6 id="title-line" class="text-center">Version beta : v69</h6>
 
     <!-- Section Citation du jour -->
     <div id="citation-container">
@@ -341,7 +342,7 @@
                   Perspective d'aujourduy (${row.Date.trim()}) : <br>
                 </span>
                 <q><strong>${row.Perspective}</strong></q>
-                <em>- ${row.Auteur}</em>
+                <em>${row.Auteur}</em>
               `;
               document.getElementById('citation-container').innerHTML = citationHTML;
               citationFound = true;
