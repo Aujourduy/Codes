@@ -1,0 +1,161 @@
+{
+  "name": "Sauvegarde",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -20
+      ],
+      "id": "5cf950ba-4c4a-452e-8cf7-ed2b868fd80e",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "returnAll": true,
+        "options": {
+          "viewId": "vwu7w7k734leecrh"
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        -40,
+        -20
+      ],
+      "id": "c59ad24c-b19b-4da7-92e2-e3aba31bb8c2",
+      "name": "NocoDB",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupérer les données sources depuis l'entrée\nconst records = items.map(item => item.json);\n\n// 2. Créer les en-têtes CSV (nom des colonnes à inclure)\nconst headers = Object.keys(records[0]); // Utilise les clés du premier objet comme colonnes CSV\n\n// 3. Fonction pour sécuriser chaque valeur (gère les caractères spéciaux comme , et \")\nconst escapeCSVValue = (value) => {\n  if (value === null || value === undefined) {\n    return \"\"; // Remplace les valeurs null ou undefined par une chaîne vide\n  }\n  const stringValue = String(value);\n  if (stringValue.includes('\"') || stringValue.includes(',') || stringValue.includes('\\n')) {\n    // Double les guillemets \" et encadre la valeur de guillemets\n    return `\"${stringValue.replace(/\"/g, '\"\"')}\"`;\n  }\n  return stringValue; // Retourne la valeur sans modification si elle est sûre\n};\n\n// 4. Construire le contenu CSV\nconst csvRows = [];\ncsvRows.push(headers.map(header => escapeCSVValue(header)).join(\",\")); // Ajouter les en-têtes CSV\nrecords.forEach(record => {\n  const row = headers.map(header => escapeCSVValue(record[header])); // Traiter et sécuriser chaque champ\n  csvRows.push(row.join(\",\")); // Ajouter chaque ligne\n});\n\n// 5. Retourner un objet prêt à être utilisé pour un fichier CSV\nreturn [{\n  json: {}, // Aucune donnée JSON à passer\n  binary: {\n    data: {\n      data: Buffer.from(csvRows.join(\"\\n\")), // Convertir le contenu CSV en un buffer binaire\n      mimeType: 'text/csv', // Spécifier le type MIME du contenu\n      fileName: 'propositions.csv' // Nom du fichier CSV\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -120
+      ],
+      "id": "4bda4032-b6cd-4116-a103-fede4c11387b",
+      "name": "Transforme en CSV"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/propositions.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        380,
+        -20
+      ],
+      "id": "de78f6c4-1b4f-4340-9961-838462e3d137",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/propositions.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -20
+      ],
+      "id": "fd4b7228-2161-47f7-9296-a3e6ebd0aad1",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupérer les données sources depuis l'entrée\nconst records = items.map(item => item.json);\n\n// Vérification du nombre d'éléments\nconsole.log(\"Nombre d'enregistrements récupérés :\", records.length);\n\n// 2. Vérifier si la liste des enregistrements est vide\nif (records.length === 0) {\n  throw new Error(\"Aucun enregistrement trouvé !\");\n}\n\n// 3. Créer les en-têtes CSV (nom des colonnes à inclure)\nconst headers = Array.from(new Set(records.flatMap(record => Object.keys(record)))); // Récupère toutes les colonnes existantes\n\n// 4. Fonction pour sécuriser chaque valeur CSV\nconst escapeCSVValue = (value) => {\n  if (value === null || value === undefined) {\n    return \"\"; // Remplace les valeurs null ou undefined par une chaîne vide\n  }\n  const stringValue = String(value);\n  if (stringValue.includes('\"') || stringValue.includes(',') || stringValue.includes('\\n')) {\n    return `\"${stringValue.replace(/\"/g, '\"\"')}\"`; // Double les guillemets et encadre la valeur\n  }\n  return stringValue;\n};\n\n// 5. Construire le contenu CSV\nconst csvRows = [];\ncsvRows.push(headers.map(header => escapeCSVValue(header)).join(\",\")); // Ajouter les en-têtes\n\nrecords.forEach((record, index) => {\n  const row = headers.map(header => escapeCSVValue(record[header] || \"\")); // Garantir que chaque ligne a toutes les colonnes\n  csvRows.push(row.join(\",\")); \n});\n\n// Vérification du nombre de lignes générées\nconsole.log(\"Nombre de lignes CSV (y compris en-tête) :\", csvRows.length);\nconsole.log(\"Nombre de lignes de données :\", csvRows.length - 1); // -1 pour enlever l'en-tête\n\n// 6. Retourner un objet prêt à être utilisé pour un fichier CSV\nreturn [{\n  json: {}, // Aucune donnée JSON\n  binary: {\n    data: {\n      data: Buffer.from(csvRows.join(\"\\n\")), // Convertir en Buffer\n      mimeType: 'text/csv', // Spécifier le type MIME\n      fileName: 'propositions.csv' // Nom du fichier CSV\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        100
+      ],
+      "id": "bf080597-e3ce-4289-a7b3-b22b10ae2fb5",
+      "name": "Transforme en CSV1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "NocoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NocoDB": {
+      "main": [
+        [
+          {
+            "node": "Transforme en CSV1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transforme en CSV": {
+      "main": [
+        []
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transforme en CSV1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "96804c2c-280c-4be9-b466-af68c8cc54bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4105cbd1e25f5519f7fa57138eadbf84d95ffcc24ffcdcb11c894d213db493bc"
+  },
+  "id": "zg2lNRqtO3TCVHBn",
+  "tags": []
+}

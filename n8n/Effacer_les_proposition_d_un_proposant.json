@@ -1,0 +1,188 @@
+{
+  "name": "Effacer les proposition d'un proposant",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ],
+      "id": "33eb7cab-0247-4447-99d0-b2aa8f786162",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        280,
+        0
+      ],
+      "id": "04d7370e-7ad9-440b-af4c-d3d1f349c35f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "id": "={{ $json.Id }}"
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        520,
+        0
+      ],
+      "id": "c1741234-bd14-4f96-aa7b-f10dd6025cd4",
+      "name": "NocoDB",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $json[\"list\"].map(record => ({\n    Id: record.Id,\n    Num_Id: record[\"Num Id\"]\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -280
+      ],
+      "id": "fb9a971a-b652-4ddf-8fe3-98cb756581ab",
+      "name": "Transformer un N items"
+    },
+    {
+      "parameters": {
+        "url": "https://app.nocodb.com/api/v2/tables/mmjx4uynj1nofyy/links/c8zd0liqcv19e9b/records/38",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "limit",
+              "value": "1000"
+            },
+            {
+              "name": "offset",
+              "value": "0"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "xc-token",
+              "value": "j8qKVVV-dFY0NJuHvhMxJ0gaF3iOc7yFRx9lJIOJ"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        -280
+      ],
+      "id": "8d7f088e-fa1b-4fb3-b429-b0f996d967b9",
+      "name": "Lister les propositions d'un animateur"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "m4v3p6j5sk0itoc",
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "ad932e37-1855-4d22-891d-3b739a1a7bf4",
+      "name": "NocoDB1",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "NocoDB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "NocoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NocoDB": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transformer un N items": {
+      "main": [
+        []
+      ]
+    },
+    "Lister les propositions d'un animateur": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "55ec06a4-18a6-46e5-a00e-d9f7cbbc6982",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4105cbd1e25f5519f7fa57138eadbf84d95ffcc24ffcdcb11c894d213db493bc"
+  },
+  "id": "RDuwKpwphbDhdz9n",
+  "tags": []
+}
