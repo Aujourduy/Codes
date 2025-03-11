@@ -1,0 +1,222 @@
+{
+  "name": "Sauvegarde Upload Algolia",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -20
+      ],
+      "id": "67f86d11-2d69-4743-91ca-40df628447f7",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mcz1f15020lmbod",
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        40,
+        -20
+      ],
+      "id": "fe2ff37a-c7c1-4985-bf0e-d968239d777c",
+      "name": "PropositionsLister",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "={{ $('Read/Write Files from Disk').item.json.fileName }}",
+        "options": {
+          "headerRow": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        -300
+      ],
+      "id": "0114cefe-f114-4a62-994b-230b5ff6f12a",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Récupérer TOUS les enregistrements de NocoDBGetMany\nconst records = $input.all().map(item => item.json);\n\n// Vérifier les données avant transformation (pour debug)\nconsole.log(\"Données brutes de NocoDB :\", JSON.stringify(records, null, 2));\n\n// Construire le format attendu pour Algolia en gardant les noms des champs en français\nconst transformedData = records.map(record => ({\n    action: \"addObject\",\n    body: {\n        \"Id\": record[\"Id\"] ?? null,\n        \"Num Id\": record[\"Num Id\"] ?? null,\n        \"Titre proposition\": record[\"Titre proposition\"] ?? \"\",\n        \"Date de début\": record[\"Date de début\"] ?? \"\",\n        \"Heure de début\": record[\"Heure de début\"] ?? \"\",\n        \"Date de fin\": record[\"Date de fin\"] ?? \"\",\n        \"Heure de fin\": record[\"Heure de fin\"] ?? \"\",\n        \"Description\": record[\"Description\"] ?? \"\",\n        \"Présentiel\": record[\"Présentiel\"] ?? false,\n        \"En ligne\": record[\"En ligne\"] ?? false,\n        \"Adresse ligne 1\": record[\"Adresse ligne 1\"] ?? \"\",\n        \"Adresse ligne 2\": record[\"Adresse ligne 2\"] ?? \"\",\n        \"Ville\": record[\"Ville\"] ?? \"\",\n        \"Code postal\": record[\"Code postal\"] ?? \"\",\n        \"Région/Etat/Province\": record[\"Région/Etat/Province\"] ?? \"\",\n        \"Pays\": record[\"Pays\"] ?? \"\",\n        \"Info d'accès\": record[\"Info d'accès\"] ?? \"\",\n        \"Tarif normal\": record[\"Tarif normal\"] ?? null,\n        \"Tarif réduit\": record[\"Tarif réduit\"] ?? null,\n        \"Proposition URL\": record[\"Proposition URL\"] ?? \"\",\n        \"Gratuit\": record[\"Gratuit\"] ?? false,\n        \"Animateur email svg\": record[\"Animateur email svg\"] ?? \"\",\n        \"CreatedAt\": record[\"CreatedAt\"] ?? \"\",\n        \"UpdatedAt\": record[\"UpdatedAt\"] ?? \"\",\n        \"DateTime\": record[\"DateTime\"] ?? \"\",\n        \"Pays Code\": record[\"Pays Code\"] ?? \"\",\n        \"Num Id bis\": record[\"Num Id bis\"] ?? null,\n        \"DateTimeMinutes\": record[\"DateTimeMinutes\"] ?? null,\n        \"DTM\": record[\"DTM\"] ?? \"\",\n        \"III\": record[\"III\"] ?? null,\n        \"Image URL\": (Array.isArray(record[\"Image URL\"]) && record[\"Image URL\"].length > 0) \n            ? record[\"Image URL\"][0] \n            : null,\n        \"Animateur pratique\": (Array.isArray(record[\"Animateur pratique\"]) && record[\"Animateur pratique\"].length > 0) \n            ? record[\"Animateur pratique\"][0] \n            : \"\",\n        \"Animateur description\": (Array.isArray(record[\"Animateur description\"]) && record[\"Animateur description\"].length > 0) \n            ? record[\"Animateur description\"][0] \n            : \"\",\n        \"DTM+1\": record[\"DTM+1\"] ?? null,\n        \"Animateur\": record[\"Animateur\"] ?? null,\n        \"Animateur Pseudo\": (Array.isArray(record[\"Animateur Pseudo\"]) && record[\"Animateur Pseudo\"].length > 0) \n            ? record[\"Animateur Pseudo\"][0] \n            : \"\"\n    }\n}));\n\n// Vérifier la structure finale avant retour (debug)\nconsole.log(\"Données transformées pour Algolia :\", JSON.stringify({ requests: transformedData }, null, 2));\n\n// Retourner les données formatées pour Algolia\nreturn [{ requests: transformedData }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        -20
+      ],
+      "id": "d1a019f9-fb4e-4e7b-b0a3-e66f66070a25",
+      "name": "Format Algolia",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $json.APPLICATION_ID }}.algolia.net/1/indexes/{{ $json.INDEX_NAME }}/clear",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Algolia-Application-Id",
+              "value": "={{ $json.APPLICATION_ID }}"
+            },
+            {
+              "name": "X-Algolia-API-Key",
+              "value": "={{ $json.ADMIN_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        -20
+      ],
+      "id": "89d0db62-e5d3-4e7d-a5e4-d11e04d3c80c",
+      "name": "Algolia CLEAR"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $('Algolia Param').item.json.APPLICATION_ID }}.algolia.net/1/indexes/{{ $('Algolia Param').item.json.INDEX_NAME }}/batch ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Algolia-Application-Id",
+              "value": "={{ $('Algolia Param').item.json.APPLICATION_ID }}"
+            },
+            {
+              "name": "X-Algolia-API-Key",
+              "value": "={{ $('Algolia Param').item.json.ADMIN_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"requests\": $('Format Algolia').item.json.requests } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        -20
+      ],
+      "id": "6cf006e5-422b-4f66-95f6-1c60cace365d",
+      "name": "Algolia UPLOAD"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"APPLICATION_ID\": \"Y4MR1NZHUG\",\n  \"INDEX_NAME\": \"Aujourduy\",\n  \"ADMIN_API_KEY\": \"9570c24a172e73f7829796cad6af5dd7\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        -20
+      ],
+      "id": "b574ab5d-811b-44a1-b4fc-66dd65212092",
+      "name": "Algolia Param"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "PropositionsLister",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PropositionsLister": {
+      "main": [
+        [
+          {
+            "node": "Format Algolia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Algolia": {
+      "main": [
+        [
+          {
+            "node": "Algolia Param",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Algolia CLEAR": {
+      "main": [
+        [
+          {
+            "node": "Algolia UPLOAD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Algolia Param": {
+      "main": [
+        [
+          {
+            "node": "Algolia CLEAR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "69f2dbca-1582-4575-ae07-e9c1311298c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4105cbd1e25f5519f7fa57138eadbf84d95ffcc24ffcdcb11c894d213db493bc"
+  },
+  "id": "A8XKX47zxp9PUOj7",
+  "tags": []
+}

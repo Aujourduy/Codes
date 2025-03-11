@@ -1,0 +1,286 @@
+{
+  "name": "Relier Proposition Membre",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        0
+      ],
+      "id": "1ffc2c0a-b009-405b-8cba-f73a0b1706b5",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        100,
+        0
+      ],
+      "id": "36af28b6-c441-4a79-b1af-652610c82b01",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mcz1f15020lmbod",
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        -220,
+        0
+      ],
+      "id": "e939112b-3437-4fe9-b00a-dc93d9e129d6",
+      "name": "Lister toutes les propositions",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mcz1f15020lmbod",
+        "id": "={{ $json.Id }}"
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        360,
+        0
+      ],
+      "id": "bd0a86b1-6039-466f-971f-ecebb8d28c5b",
+      "name": "Lire la Proposition",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "update",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mcz1f15020lmbod",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "Id",
+              "fieldValue": "={{ $('Lire la Proposition').item.json.Id }}"
+            },
+            {
+              "fieldName": "Image URL",
+              "fieldValue": "={{ $json['T Cloudy URL'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        780,
+        -200
+      ],
+      "id": "beaaaf79-1043-4efa-850a-f310bd07c37b",
+      "name": "NocoDB2",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "getAll",
+        "workspaceId": "w232pic2",
+        "projectId": "p4usq7pbl8yhssb",
+        "table": "mkqxkhbfacunwor",
+        "options": {
+          "where": "=(Email,eq,{{ $json['Animateur email svg'] }})"
+        }
+      },
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 3,
+      "position": [
+        580,
+        0
+      ],
+      "id": "4d3031aa-c0ec-4c9c-8000-a8e30b21f02c",
+      "name": "Lire le Membre",
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "L9wRJfJ43DCi6xsG",
+          "name": "NocoDB Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        0
+      ],
+      "id": "100c7cba-a3c4-40ee-8fd3-a05e738989fc",
+      "name": "Wait",
+      "webhookId": "78ec477a-24fd-4ba4-a1b4-adf617862dc7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://app.nocodb.com/api/v2/tables/mcz1f15020lmbod/links/ci11imz3i5jv372/records/ {{ $('Lire la Proposition').item.json.Id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "xc-token",
+              "value": "j8qKVVV-dFY0NJuHvhMxJ0gaF3iOc7yFRx9lJIOJ"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Id",
+              "value": "={{ $json.Id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "6df84811-5f0f-463e-b716-cf4aa6aeac46",
+      "name": "LienPropositionMembre"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Lister toutes les propositions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Lire la Proposition",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lister toutes les propositions": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire la Proposition": {
+      "main": [
+        [
+          {
+            "node": "Lire le Membre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire le Membre": {
+      "main": [
+        [
+          {
+            "node": "LienPropositionMembre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NocoDB2": {
+      "main": [
+        []
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LienPropositionMembre": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "556f8d67-e6b6-44a9-8479-994936c1832c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4105cbd1e25f5519f7fa57138eadbf84d95ffcc24ffcdcb11c894d213db493bc"
+  },
+  "id": "76bGOMjiWOTtGoU2",
+  "tags": []
+}
