@@ -287,83 +287,100 @@
 
 
     <h5 id="title-line1" class="text-center">Site proposé par Duy Dang </h5>
-    <h6 id="title-line" class="text-center">Version beta : v72</h6>
+    <h6 id="title-line" class="text-center">Version beta : v73</h6>
 
     <!-- Section Citation du jour -->
-    <div id="citation-container">
-      <p>Chargement de la citation du jour...</p>
-    </div>
-
-    <hr class="ligne">
+<!-- Section Citation du jour -->
 
 
-    <div id="screen-dimensions"></div>
-    <div id="screen-info"></div>
-    <div id="searchbox" class="mb-3"></div>
-    <div id="hits" class="mt-3"></div>
-  </div>
-  <div id="bottom-buttons" class="bottom-buttons">
-    <button onclick="window.location.href='https://tally.so/r/mZD1by';">Contact</button>
-    <button onclick="scrollToTop()">🡅</button>
-    <button onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
-    <button id="installButton" style="display: none;">Installer</button>
-  </div>
+<!-- Section Citation du jour -->
 
-    <script>
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    </script>
-    
-  <!-- Script pour la citation du jour encapsulé pour éviter les conflits -->
+
+<!-- Section Citation du jour -->
+<div id="citation-container">
+  <p>Chargement de la citation du jour...</p>
+</div>
+
+<hr class="ligne">
+
+<div id="screen-dimensions"></div>
+<div id="screen-info"></div>
+<div id="searchbox" class="mb-3"></div>
+<div id="hits" class="mt-3"></div>
+</div>
+<div id="bottom-buttons" class="bottom-buttons">
+  <button onclick="window.location.href='https://tally.so/r/mZD1by';">Contact</button>
+  <button onclick="scrollToTop()">🡅</button>
+  <button onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+  <button id="installButton" style="display: none;">Installer</button>
+</div>
+
+<script>
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<!-- Script pour la citation du jour via Algolia -->
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.js"></script>
+
+<!--***************************  DEB CITATION *********************************-->
   <script>
-    (function () {
-      // Fonction de formatage de la date au format "dd/mm/yyyy"
+
+  (function () {
+      // Fonction de formatage de la date au format "jj/mm/aaaa"
       function formatDate(date) {
-        let dd = String(date.getDate()).padStart(2, '0');
-        let mm = String(date.getMonth() + 1).padStart(2, '0');
-        let yyyy = date.getFullYear();
-        return dd + '/' + mm + '/' + yyyy;
+          let dd = String(date.getDate()).padStart(2, '0');
+          let mm = String(date.getMonth() + 1).padStart(2, '0');
+          let yyyy = date.getFullYear();
+          return dd + '/' + mm + '/' + yyyy;
       }
+      
       const today = new Date();
       const todayFormatted = formatDate(today);
       console.log("Date du jour:", todayFormatted);
-
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRNhtFtY-ganfj5GaPuYSY4U9gruyeNfiN--K4pBmEXFaxKZZHEAeLu46TSgMFvQiaGRQ9rWaTsiUTP/pub?output=csv';
-
-      Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        complete: function (results) {
-          console.log("Données chargées", results.data);
-          let citationFound = false;
-          results.data.forEach(function (row) {
-            console.log("Date lue :", row.Date);
-            if (row.Date && row.Date.trim() === todayFormatted) {
+      
+      // Clés Algolia
+      const applicationID = "Y4MR1NZHUG";
+      const apiKey = "e2c5211b0c5fd5bd468831b566fe0711";
+      const indexName = "Perspectives";
+      
+      // Effectuer la requête Algolia
+      fetch(`https://${applicationID}-dsn.algolia.net/1/indexes/${indexName}?query=${todayFormatted}`, {
+          method: "GET",
+          headers: {
+              "X-Algolia-Application-Id": applicationID,
+              "X-Algolia-API-Key": apiKey
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log("Données Algolia:", data);
+          
+          if (data.hits && data.hits.length > 0) {
+              let citation = data.hits[0];
               const citationHTML = `
-                <span style="font-size: 0.9rem;">
-                  Perspective d'aujourduy (${row.Date.trim()}) : <br>
-                </span>
-                <q><strong>${row.Perspective}</strong></q>
-                <em>${row.Auteur}</em>
+                  <span style="font-size: 0.9rem;">
+                      Perspective d'aujourduy (${citation.Date}) : <br>
+                  </span>
+                  <q><strong>${citation.Perspective}</strong></q>
+                  <em>${citation.Auteur}</em>
               `;
               document.getElementById('citation-container').innerHTML = citationHTML;
-              citationFound = true;
-            }
-          });
-          if (!citationFound) {
-            document.getElementById('citation-container').innerHTML = "<p>Aucune citation n'est prévue pour aujourd'hui.</p>";
+          } else {
+              document.getElementById('citation-container').innerHTML = "<p>Aucune citation n'est prévue pour aujourd'hui.</p>";
           }
-        },
-        error: function (err) {
-          console.error('Erreur lors du chargement du CSV :', err);
+      })
+      .catch(error => {
+          console.error('Erreur lors du chargement de la citation depuis Algolia:', error);
           document.getElementById('citation-container').innerHTML = "<p>Erreur de chargement de la citation.</p>";
-        }
       });
-    })();
+  })();
   </script>
 
+<!--***************************  FIN CITATION *********************************-->
 
+<!--***************************  DEBUT PROPOSITIONS ALGOLIA *********************************-->
   <!-- Script pour InstantSearch (Algolia) -->
   <script>
     // Ici, on peut utiliser une autre variable ou simplement utiliser "todayAlgolia" si nécessaire
@@ -464,6 +481,8 @@
     ]);
     search.start();
   </script>
+
+<!--***************************  FIN PROPOSITIONS ALGOLIA *********************************-->
 
   <script>
     // Code relatif au service worker et à l'installation PWA.
