@@ -430,15 +430,15 @@ function scrollToTop() {
                         </span>
                         <span class="date-info truncated">
                           ${(() => {
-                const date = new Date(hit['Date de début']);
-                const day = ("0" + date.getDate()).slice(-2);
-                const month = ("0" + (date.getMonth() + 1)).slice(-2);
-                const year = date.getFullYear().toString().slice(-2);
-                return `${day}/${month}`;
-              })()}
+                            const date = new Date(hit['Date de début']);
+                            const day = ("0" + date.getDate()).slice(-2);
+                            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                            const year = date.getFullYear().toString().slice(-2);
+                            return `${day}/${month}/${year}`;
+                          })()}
                         </span>
                         <span class="time-info truncated">
-                          à ${hit['Heure de début'].slice(0, 5)}
+                          ${hit['Heure de début'].slice(0, 5)}
                         </span>
                        <span class="ville-info truncated">
                           <img src="pictogramme_ville_2.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
