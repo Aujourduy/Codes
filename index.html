@@ -434,15 +434,11 @@ function scrollToTop() {
                             const day = ("0" + date.getDate()).slice(-2);
                             const month = ("0" + (date.getMonth() + 1)).slice(-2);
                             const year = date.getFullYear().toString().slice(-2);
-                            return `${day}/${month}`;
+                            return `${day}/${month}/${year}`;
                           })()}
                         </span>
                         <span class="time-info truncated">
                           ${hit['Heure de début'].slice(0, 5)}
-                        </span>
-                       <span class="ville-info truncated">
-                          <img src="pictogramme_ville_2.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
-                          ${hit.Ville} (${hit['Pays Code']})
                         </span>
                       </div>
                       <div class="vignette-animateur animateur-info truncated">
@@ -457,7 +453,7 @@ function scrollToTop() {
                         <img src="pictogramme_titre_2.png" alt="Titre Icon" class="pictogramme pictogramme-titre" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Titre proposition'].toLowerCase().charAt(0).toUpperCase()}${hit['Titre proposition'].slice(1).toLowerCase()}
                       </div>
-                      <div class="vignette-fourth-line" style="display: none;">
+                      <div class="vignette-fourth-line">
                         <span class="ville-info truncated">
                           <img src="pictogramme_ville_2.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
                           ${hit.Ville} (${hit['Pays Code']})
