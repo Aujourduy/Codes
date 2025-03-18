@@ -419,38 +419,45 @@ function scrollToTop() {
                   <div class="col d-flex align-items-center vignette-content-col">
                     <div class="card-body vignette-body">
                       <div class="vignette-first-line">
+                        <img src="pictogramme_date_2.png" alt="Date Icon" class="pictogramme pictogramme-date" style="height: 1em; margin-right: 0.2em;">
                         <span class="weekday-info">
                           ${(() => {
-                const date = new Date(hit['Date de début']);
-                const weekday = date.toLocaleDateString('fr-FR', { weekday: 'short' });
-                const formattedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
-                return formattedWeekday;
-              })()}
+                            const date = new Date(hit['Date de début']);
+                            const weekday = date.toLocaleDateString('fr-FR', { weekday: 'short' });
+                            const formattedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+                            return formattedWeekday;
+                          })()}
                         </span>
                         <span class="date-info truncated">
-                          <img src="pictogramme_date_2.png" alt="Date Icon" class="pictogramme pictogramme-date" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
                 const date = new Date(hit['Date de début']);
                 const day = ("0" + date.getDate()).slice(-2);
                 const month = ("0" + (date.getMonth() + 1)).slice(-2);
                 const year = date.getFullYear().toString().slice(-2);
-                return `${day}/${month}/${year}`;
+                return `${day}/${month}`;
               })()}
                         </span>
                         <span class="time-info truncated">
-                          <img src="pictogramme_heure_2.png" alt="Heure Icon" class="pictogramme pictogramme-heure" style="height: 1em; margin-right: 0.2em;">
-                          ${hit['Heure de début'].slice(0, 5)}
+                          à ${hit['Heure de début'].slice(0, 5)}
+                        </span>
+                       <span class="ville-info truncated">
+                          <img src="pictogramme_ville_2.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
+                          ${hit.Ville} (${hit['Pays Code']})
                         </span>
                       </div>
                       <div class="vignette-animateur animateur-info truncated">
                         <img src="pictogramme_animateur_2.png" alt="Animateur Icon" class="pictogramme pictogramme-animateur" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Animateur Pseudo']}
                       </div>
+                      <div class="vignette-animateur animateur-info truncated">
+                        <img src="pictogramme_info.png" alt="Animateur pratique" class="pictogramme pictogramme-animateur" style="height: 1em; margin-right: 0.2em;">
+                        ${hit['Animateur pratique']}
+                      </div>
                       <div class="vignette-titre titre-info truncated">
                         <img src="pictogramme_titre_2.png" alt="Titre Icon" class="pictogramme pictogramme-titre" style="height: 1em; margin-right: 0.2em;">
                         ${hit['Titre proposition'].toLowerCase().charAt(0).toUpperCase()}${hit['Titre proposition'].slice(1).toLowerCase()}
                       </div>
-                      <div class="vignette-fourth-line">
+                      <div class="vignette-fourth-line" style="display: none;">
                         <span class="ville-info truncated">
                           <img src="pictogramme_ville_2.png" alt="Ville Icon" class="pictogramme pictogramme-ville" style="height: 1em; margin-right: 0.2em;">
                           ${hit.Ville} (${hit['Pays Code']})
@@ -458,18 +465,18 @@ function scrollToTop() {
                         <span class="tarif-info truncated">
                           <img src="pictogramme_tarif_2.png" alt="Tarif Icon" class="pictogramme pictogramme-tarif" style="height: 1em; margin-right: 0.2em;">
                           ${(() => {
-                const tarifNormal = hit['Tarif normal'];
-                const tarifReduit = hit['Tarif réduit'];
-                let output = "";
-                if (tarifNormal && tarifNormal != 0) {
-                  output += tarifNormal + '€';
-                }
-                if (tarifReduit && tarifReduit != 0) {
-                  if (output !== "") { output += ' / '; }
-                  output += tarifReduit + '€';
-                }
-                return output;
-              })()}
+                            const tarifNormal = hit['Tarif normal'];
+                            const tarifReduit = hit['Tarif réduit'];
+                            let output = "";
+                            if (tarifNormal && tarifNormal != 0) {
+                              output += tarifNormal + '€';
+                            }
+                            if (tarifReduit && tarifReduit != 0) {
+                              if (output !== "") { output += ' / '; }
+                              output += tarifReduit + '€';
+                            }
+                            return output;
+                          })()}
                         </span>
                       </div>
                     </div>
